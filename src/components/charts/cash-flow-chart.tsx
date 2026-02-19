@@ -3,8 +3,6 @@
 import {
   Area,
   AreaChart,
-  CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -98,50 +96,42 @@ export function CashFlowChart({ transactions }: CashFlowChartProps) {
           margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
         >
           <defs>
-            <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-            </linearGradient>
-            <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
-            </linearGradient>
             <linearGradient id="balanceGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2} />
+              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
               <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
           <XAxis
             dataKey="formattedDate"
-            tick={{ fontSize: 11, fill: "#6b7280" }}
+            tick={{ fontSize: 11, fill: "#888" }}
             tickLine={false}
-            axisLine={{ stroke: "#e5e7eb" }}
+            axisLine={false}
             interval="preserveStartEnd"
           />
           <YAxis
-            tick={{ fontSize: 11, fill: "#6b7280" }}
+            tick={{ fontSize: 11, fill: "#888" }}
             tickLine={false}
             axisLine={false}
             tickFormatter={formatCurrency}
             width={60}
           />
           <Tooltip
-            content={({ active, payload, label }) => {
+            content={({ active, payload }) => {
               if (active && payload && payload.length) {
+                const data = payload[0].payload as ChartDataPoint;
                 return (
                   <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg p-3 shadow-lg">
-                    <p className="text-sm font-medium mb-2">{label}</p>
+                    <p className="text-sm font-medium mb-2">{data.formattedDate}</p>
                     <div className="space-y-1">
                       <p className="text-sm text-emerald-600">
-                        Income: {formatCurrency(payload[0].value as number)}
+                        Income: {formatCurrency(data.income)}
                       </p>
                       <p className="text-sm text-red-600">
-                        Expenses: {formatCurrency(payload[1].value as number)}
+                        Expenses: {formatCurrency(data.expenses)}
                       </p>
                       <div className="border-t border-gray-200 dark:border-slate-700 pt-1 mt-2">
                         <p className="text-sm font-medium text-blue-600">
-                          Net: {formatCurrency(payload[2].value as number)}
+                          Net: {formatCurrency(data.netBalance)}
                         </p>
                       </div>
                     </div>
@@ -151,28 +141,6 @@ export function CashFlowChart({ transactions }: CashFlowChartProps) {
               return null;
             }}
           />
-          <Legend
-            verticalAlign="top"
-            height={36}
-            iconType="circle"
-            wrapperStyle={{ fontSize: "12px", paddingBottom: "10px" }}
-          />
-          <Area
-            type="monotone"
-            dataKey="income"
-            name="Income"
-            stroke="#10b981"
-            strokeWidth={2}
-            fill="url(#incomeGradient)"
-          />
-          <Area
-            type="monotone"
-            dataKey="expenses"
-            name="Expenses"
-            stroke="#ef4444"
-            strokeWidth={2}
-            fill="url(#expenseGradient)"
-          />
           <Area
             type="monotone"
             dataKey="netBalance"
@@ -180,7 +148,6 @@ export function CashFlowChart({ transactions }: CashFlowChartProps) {
             stroke="#3b82f6"
             strokeWidth={2}
             fill="url(#balanceGradient)"
-            strokeDasharray="5 5"
           />
         </AreaChart>
       </ResponsiveContainer>
