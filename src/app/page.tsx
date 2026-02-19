@@ -34,7 +34,7 @@ export default async function Home() {
         </div>
 
         {/* Subtitle */}
-        <p className="mt-8 text-lg md:text-xl text-[#71717a] max-w-xl">
+        <p className="mt-8 text-lg md:text-xl text-muted-foreground max-w-xl">
           Software for logistics, market research, and AI.
         </p>
 
@@ -57,7 +57,7 @@ export default async function Home() {
 
       {/* Featured Work Section */}
       <section className="container mx-auto px-6 pb-24">
-        <p className="text-xs font-medium text-[#71717a] uppercase tracking-widest mb-8">
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest mb-8">
           Featured Work
         </p>
 
@@ -91,9 +91,9 @@ export default async function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 7m0 13V7m7 0a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#18181b]">Raqi</h3>
+                  <h3 className="text-xl font-semibold text-foreground">Raqi</h3>
                 </div>
-                <p className="text-[#71717a]">Enterprise logistics intelligence with WhatsApp-based proof of delivery.</p>
+                <p className="text-muted-foreground">Enterprise logistics intelligence with WhatsApp-based proof of delivery.</p>
               </div>
             </div>
           </div>
@@ -131,9 +131,9 @@ export default async function Home() {
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#18181b]">IdeaApe</h3>
+                  <h3 className="text-xl font-semibold text-foreground">IdeaApe</h3>
                 </div>
-                <p className="text-[#71717a]">AI market research from real Reddit conversations.</p>
+                <p className="text-muted-foreground">AI market research from real Reddit conversations.</p>
               </div>
             </div>
           </div>
@@ -166,9 +166,9 @@ export default async function Home() {
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#18181b]">PostCrawl</h3>
+                  <h3 className="text-xl font-semibold text-foreground">PostCrawl</h3>
                 </div>
-                <p className="text-[#71717a]">LLM-ready social data API.</p>
+                <p className="text-muted-foreground">LLM-ready social data API.</p>
               </div>
             </div>
           </div>
@@ -202,9 +202,9 @@ export default async function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#18181b]">OpenDictation</h3>
+                  <h3 className="text-xl font-semibold text-foreground">OpenDictation</h3>
                 </div>
-                <p className="text-[#71717a]">Voice-to-text for any macOS app, powered by local or cloud AI.</p>
+                <p className="text-muted-foreground">Voice-to-text for any macOS app, powered by local or cloud AI.</p>
               </div>
             </div>
           </div>
