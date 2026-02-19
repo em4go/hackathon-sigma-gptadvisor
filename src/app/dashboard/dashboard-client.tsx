@@ -17,7 +17,6 @@ import {
   Eye,
   EyeOff,
   TrendingUp,
-  Wallet,
   ArrowUpRight,
   ArrowDownRight,
   Receipt,
@@ -50,8 +49,7 @@ import { TransactionManager } from "@/components/transactions/transaction-manage
 import portfolioData from "@/../data/inversions.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CashFlowChart } from "@/components/charts/cash-flow-chart";
-import { CategoryChart } from "@/components/charts/category-chart";
-import { ParetoChart } from "@/components/charts/pareto-chart";
+import { CategoryTreemapView } from "@/components/charts/category-treemap-view";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format, isWithinInterval, parseISO, startOfDay, endOfDay } from "date-fns";
@@ -107,15 +105,21 @@ export function DashboardClient({ user }: DashboardClientProps) {
   });
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [greeting, setGreeting] = useState("Hello");
   
   const userName = user.name || user.email?.split("@")[0] || "User";
-  const currentHour = new Date().getHours();
-  const greeting =
-    currentHour < 12
-      ? "Good morning"
-      : currentHour < 18
-        ? "Good afternoon"
-        : "Good evening";
+
+  // Set greeting on client side to avoid hydration mismatch
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      setGreeting("Good morning");
+    } else if (currentHour < 18) {
+      setGreeting("Good afternoon");
+    } else {
+      setGreeting("Good evening");
+    }
+  }, []);
 
   // Fetch transactions from API
   const fetchTransactions = useCallback(async () => {
@@ -282,21 +286,6 @@ export function DashboardClient({ user }: DashboardClientProps) {
                   : "••••••"}
               </span>
             </div>
-
-            {/* Total Balance */}
-            <div className="flex items-center justify-between py-3 border-t border-primary/20">
-              <div className="flex items-center gap-2">
-                <Wallet className="size-4 text-blue-500" />
-                <span className="text-sm text-muted-foreground">
-                  Total Balance
-                </span>
-              </div>
-              <span className="text-lg font-semibold text-foreground">
-                {showBalance
-                  ? formatCurrency(stats.totalBalance)
-                  : "••••••"}
-              </span>
-            </div>
           </CardContent>
         </Card>
 
@@ -344,7 +333,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
             </CardContent>
           </Card>
 
-          {/* Remaining Budget */}
+          {/* Cash */}
           <Card className="relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl col-span-2 md:col-span-1">
             <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
             <CardContent className="p-4 relative z-10">
@@ -353,7 +342,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
                   <Receipt className="size-4 text-blue-500" />
                 </div>
                 <span className="text-xs font-medium text-blue-500 uppercase tracking-wide">
-                  Remaining
+                  Cash
                 </span>
               </div>
               <div className="text-xl font-bold text-foreground mb-1">
@@ -366,49 +355,6 @@ export function DashboardClient({ user }: DashboardClientProps) {
           </Card>
         </div>
 
-        {/* Current Situation Summary */}
-        <Card className="mb-6 relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
-          <CardHeader className="pb-3 relative z-10">
-            <CardTitle className="text-base font-semibold">
-              Your Financial Situation
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 relative z-10">
-            <div className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-muted-foreground">
-                    Budget Usage
-                  </span>
-                  <span className="text-sm font-medium">60%</span>
-                </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-primary rounded-full w-[60%]" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <div className="text-center p-3 bg-muted/50 rounded-lg">
-                  <p className="text-xs text-muted-foreground mb-1">
-                    Savings Rate
-                  </p>
-                  <p className="text-lg font-semibold text-emerald-500">
-                    40%
-                  </p>
-                </div>
-                <div className="text-center p-3 bg-muted/50 rounded-lg">
-                  <p className="text-xs text-muted-foreground mb-1">
-                    Daily Budget
-                  </p>
-                  <p className="text-lg font-semibold">
-                    {showBalance ? "$46" : "•••"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Analytics Tabs */}
         <Card className="mb-6 relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
           <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
@@ -419,22 +365,18 @@ export function DashboardClient({ user }: DashboardClientProps) {
           </CardHeader>
           <CardContent className="pt-0 relative z-10">
             <Tabs defaultValue="cashflow" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-4 bg-white/20 backdrop-blur-sm">
+              <TabsList className="grid w-full grid-cols-2 mb-4 bg-white/20 backdrop-blur-sm">
                 <TabsTrigger value="cashflow" className="text-xs sm:text-sm">Cash Flow</TabsTrigger>
-                <TabsTrigger value="categories" className="text-xs sm:text-sm">Categories</TabsTrigger>
-                <TabsTrigger value="trends" className="text-xs sm:text-sm">Trends</TabsTrigger>
+                <TabsTrigger value="expenses" className="text-xs sm:text-sm">Expenses</TabsTrigger>
               </TabsList>
               <TabsContent value="cashflow" className="mt-0">
                 <CashFlowChart transactions={transactions} />
                 <p className="text-xs text-muted-foreground mt-3 text-center">
-                  Track your income, expenses, and net balance over time
+                  Track your net balance over time
                 </p>
               </TabsContent>
-              <TabsContent value="categories" className="mt-0">
-                <CategoryChart transactions={transactions} />
-              </TabsContent>
-              <TabsContent value="trends" className="mt-0">
-                <ParetoChart transactions={transactions} />
+              <TabsContent value="expenses" className="mt-0">
+                <CategoryTreemapView transactions={transactions} />
               </TabsContent>
             </Tabs>
           </CardContent>
