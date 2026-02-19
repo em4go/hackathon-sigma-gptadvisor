@@ -43,9 +43,10 @@ import {
   Search,
   CalendarIcon,
   X,
+  Loader2,
 } from "lucide-react";
-import { useState, useMemo } from "react";
-import transactionData from "@/../data/history.json";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { TransactionManager } from "@/components/transactions/transaction-manager";
 import portfolioData from "@/../data/inversions.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CashFlowChart } from "@/components/charts/cash-flow-chart";
@@ -104,6 +105,8 @@ export function DashboardClient({ user }: DashboardClientProps) {
     from: undefined,
     to: undefined,
   });
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const userName = user.name || user.email?.split("@")[0] || "User";
   const currentHour = new Date().getHours();
@@ -114,12 +117,30 @@ export function DashboardClient({ user }: DashboardClientProps) {
         ? "Good afternoon"
         : "Good evening";
 
-  // Process real data from history.json
-  const transactions = useMemo(() => {
-    return (transactionData as Transaction[]).sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+  // Fetch transactions from API
+  const fetchTransactions = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("/api/transactions");
+      if (!response.ok) {
+        throw new Error("Failed to fetch transactions");
+      }
+      const data = await response.json();
+      setTransactions(
+        data.sort((a: Transaction, b: Transaction) => 
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        )
+      );
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchTransactions();
+  }, [fetchTransactions]);
 
   // Get unique categories from transactions
   const categories = useMemo(() => {
@@ -220,6 +241,10 @@ export function DashboardClient({ user }: DashboardClientProps) {
               </h2>
             </div>
           </div>
+          <TransactionManager
+            transactions={transactions}
+            onTransactionsChange={fetchTransactions}
+          />
         </div>
 
         {/* Total Balance Card - Glass UI Effect */}

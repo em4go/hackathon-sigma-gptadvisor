@@ -59,12 +59,14 @@ import { toast } from "sonner";
 import { availableModels, defaultModel, type ModelConfig } from "@/lib/models";
 
 const suggestions = [
-  "Where can I buy affordable streetwear?",
-  "What bars are open now near me?",
-  "How much did I spend on food this month?",
-  "Recommend a good Italian restaurant",
-  "Show me my recent expenses",
-  "Where can I find vintage clothing?",
+  "How is my portfolio performing?",
+  "Can I afford a trip to Thailand?",
+  "Where is my money going this month?",
+  "Should I rebalance my investments?",
+  "How long to save for a new laptop?",
+  "What financial goals can I achieve soon?",
+  "How can I improve my savings rate?",
+  "Analyze my spending patterns",
 ];
 
 interface ChatClientProps {
@@ -143,7 +145,7 @@ const ChatPromptInput = ({
         <PromptInputTextarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask about restaurants, shops, or your finances..."
+          placeholder="Ask about your portfolio, spending, savings goals..."
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
@@ -251,8 +253,8 @@ export const ChatClient = ({ chatId, initialMessages }: ChatClientProps) => {
         <ConversationContent className="max-w-3xl mx-auto">
           {messages.length === 0 ? (
             <ConversationEmptyState
-              title="Start a conversation"
-              description="Ask me about restaurants, clothing stores, bars, or your finances."
+              title="Your Personal Financial Advisor"
+              description="Ask me about your investments, spending, savings goals, or how to improve your financial health. I'm here to help you make smarter financial decisions."
               icon={<MessageCircle className="size-8" />}
             />
           ) : (
