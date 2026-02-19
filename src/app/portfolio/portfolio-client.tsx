@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BottomNav } from "@/components/navigation/bottom-nav";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AssetChartModal } from "@/components/portfolio/asset-chart-modal";
 import {
   Eye,
   EyeOff,
@@ -83,6 +84,11 @@ const groupIcons: Record<string, React.ElementType> = {
 
 export function PortfolioClient({ user }: PortfolioClientProps) {
   const [showValues, setShowValues] = useState(true);
+  const [selectedPosition, setSelectedPosition] = useState<{
+    symbol: string;
+    name: string;
+    group: string;
+  } | null>(null);
   const userName = user.name || user.email?.split("@")[0] || "User";
   const currentHour = new Date().getHours();
   const greeting =
@@ -125,8 +131,15 @@ export function PortfolioClient({ user }: PortfolioClientProps) {
   const isProfit = data.portfolio_summary.total_profit_loss >= 0;
 
   return (
-    <div className="min-h-screen bg-background pb-24">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-4xl">
+    <div className="min-h-screen bg-background pb-24 relative overflow-hidden">
+      {/* Vibrant background for glass effect */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 pointer-events-none" />
+      
+      {/* Decorative blurred circles behind the card */}
+      <div className="fixed top-20 left-10 w-64 h-64 bg-blue-500/60 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed top-32 right-10 w-72 h-72 bg-purple-500/60 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed top-48 left-1/3 w-48 h-48 bg-pink-500/60 rounded-full blur-3xl pointer-events-none" />
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -157,9 +170,11 @@ export function PortfolioClient({ user }: PortfolioClientProps) {
           </Button>
         </div>
 
-        {/* Portfolio Summary Card */}
-        <Card className="mb-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
-          <CardContent className="p-6">
+        {/* Portfolio Summary Card - Glass UI Effect */}
+        <Card className="mb-6 relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
+          {/* Inner glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+          <CardContent className="p-6 relative z-10">
             <div className="flex items-center gap-2 mb-4">
               <Wallet className="size-5 text-primary" />
               <span className="text-muted-foreground font-medium">
@@ -210,15 +225,16 @@ export function PortfolioClient({ user }: PortfolioClientProps) {
           </CardContent>
         </Card>
 
-        {/* Evolution Chart */}
-        <Card className="mb-6 bg-card border-border/50">
-          <CardHeader className="pb-3">
+        {/* Evolution Chart - Glass UI Effect */}
+        <Card className="mb-6 relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+          <CardHeader className="pb-3 relative z-10">
             <CardTitle className="text-base font-semibold flex items-center gap-2">
               <LineChart className="size-4 text-primary" />
               6 Month Evolution
             </CardTitle>
           </CardHeader>
-          <CardContent className="pt-0">
+          <CardContent className="pt-0 relative z-10">
             <div className="h-32 w-full">
               <svg
                 viewBox="0 0 100 40"
@@ -255,15 +271,16 @@ export function PortfolioClient({ user }: PortfolioClientProps) {
           </CardContent>
         </Card>
 
-        {/* Asset Allocation */}
-        <Card className="mb-6 bg-card border-border/50">
-          <CardHeader className="pb-3">
+        {/* Asset Allocation - Glass UI Effect */}
+        <Card className="mb-6 relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+          <CardHeader className="pb-3 relative z-10">
             <CardTitle className="text-base font-semibold flex items-center gap-2">
               <PieChart className="size-4 text-primary" />
               Asset Allocation
             </CardTitle>
           </CardHeader>
-          <CardContent className="pt-0">
+          <CardContent className="pt-0 relative z-10">
             <div className="space-y-4">
               {data.asset_allocation.map((asset) => {
                 const Icon = groupIcons[asset.group] || DollarSign;
@@ -321,8 +338,8 @@ export function PortfolioClient({ user }: PortfolioClientProps) {
           </CardContent>
         </Card>
 
-        {/* Positions Tabs */}
-        <Tabs defaultValue="all" className="w-full">
+        {/* Positions Tabs - Glass UI Effect */}
+        <Tabs defaultValue="all" className="w-full" suppressHydrationWarning>
           <TabsList className="grid w-full grid-cols-4 mb-4">
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="crypto">Crypto</TabsTrigger>
@@ -338,6 +355,11 @@ export function PortfolioClient({ user }: PortfolioClientProps) {
                 showValues={showValues}
                 formatCurrency={formatCurrency}
                 formatPercentage={formatPercentage}
+                onClick={() => setSelectedPosition({
+                  symbol: position.symbol,
+                  name: position.name,
+                  group: position.group,
+                })}
               />
             ))}
           </TabsContent>
@@ -353,12 +375,28 @@ export function PortfolioClient({ user }: PortfolioClientProps) {
                     showValues={showValues}
                     formatCurrency={formatCurrency}
                     formatPercentage={formatPercentage}
+                    onClick={() => setSelectedPosition({
+                      symbol: position.symbol,
+                      name: position.name,
+                      group: position.group,
+                    })}
                   />
                 ))}
             </TabsContent>
           ))}
         </Tabs>
       </div>
+
+      {/* Asset Chart Modal */}
+      {selectedPosition && (
+        <AssetChartModal
+          symbol={selectedPosition.symbol}
+          name={selectedPosition.name}
+          group={selectedPosition.group}
+          open={!!selectedPosition}
+          onOpenChange={(open) => !open && setSelectedPosition(null)}
+        />
+      )}
 
       <BottomNav />
     </div>
@@ -370,6 +408,7 @@ interface PositionCardProps {
   showValues: boolean;
   formatCurrency: (amount: number) => string;
   formatPercentage: (value: number) => string;
+  onClick: () => void;
 }
 
 function PositionCard({
@@ -377,13 +416,18 @@ function PositionCard({
   showValues,
   formatCurrency,
   formatPercentage,
+  onClick,
 }: PositionCardProps) {
   const isPositive = position.profit_loss_percentage >= 0;
   const Icon = groupIcons[position.group] || DollarSign;
 
   return (
-    <Card className="bg-card border-border/50 hover:bg-accent/50 transition-colors">
-      <CardContent className="p-4">
+    <Card 
+      className="relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl hover:bg-white/90 dark:hover:bg-slate-800/90 transition-colors cursor-pointer"
+      onClick={onClick}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+      <CardContent className="p-4 relative z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div

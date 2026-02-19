@@ -49,6 +49,8 @@ import transactionData from "@/../data/history.json";
 import portfolioData from "@/../data/inversions.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CashFlowChart } from "@/components/charts/cash-flow-chart";
+import { CategoryChart } from "@/components/charts/category-chart";
+import { ParetoChart } from "@/components/charts/pareto-chart";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format, isWithinInterval, parseISO, startOfDay, endOfDay } from "date-fns";
@@ -404,24 +406,10 @@ export function DashboardClient({ user }: DashboardClientProps) {
                 </p>
               </TabsContent>
               <TabsContent value="categories" className="mt-0">
-                <div className="flex items-center justify-center h-64 text-muted-foreground">
-                  <div className="text-center">
-                    <p className="text-sm mb-2">Category breakdown coming soon</p>
-                    <p className="text-xs text-muted-foreground">
-                      Visualize spending by category
-                    </p>
-                  </div>
-                </div>
+                <CategoryChart transactions={transactions} />
               </TabsContent>
               <TabsContent value="trends" className="mt-0">
-                <div className="flex items-center justify-center h-64 text-muted-foreground">
-                  <div className="text-center">
-                    <p className="text-sm mb-2">Spending trends coming soon</p>
-                    <p className="text-xs text-muted-foreground">
-                      Identify patterns in your financial behavior
-                    </p>
-                  </div>
-                </div>
+                <ParetoChart transactions={transactions} />
               </TabsContent>
             </Tabs>
           </CardContent>

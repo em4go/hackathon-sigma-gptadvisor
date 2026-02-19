@@ -242,10 +242,18 @@ export function AssetChartModal({
                     formatter={(value) => [formatCurrency(Number(value)), "Close"]}
                     labelFormatter={(label) => formatDate(String(label))}
                     contentStyle={{
-                      backgroundColor: "rgba(255, 255, 255, 0.95)",
-                      border: "1px solid #e2e8f0",
+                      backgroundColor: "hsl(var(--popover))",
+                      border: "1px solid hsl(var(--border))",
                       borderRadius: "8px",
                       fontSize: "12px",
+                    }}
+                    itemStyle={{
+                      color: "hsl(var(--popover-foreground))",
+                    }}
+                    labelStyle={{
+                      color: "hsl(var(--popover-foreground))",
+                      fontWeight: 500,
+                      marginBottom: "4px",
                     }}
                   />
                   <Area
