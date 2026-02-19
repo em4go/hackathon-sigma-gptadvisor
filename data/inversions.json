@@ -1,0 +1,109 @@
+{
+  "portfolio_summary": {
+    "total_invested": 42500.00,
+    "current_value": 48750.50,
+    "total_profit_loss": 6250.50,
+    "total_profit_loss_percentage": 14.71,
+    "currency": "USD"
+  },
+  "asset_allocation": [
+    {
+      "group": "Crypto",
+      "total_value": 12187.62,
+      "allocation_percentage": 25,
+      "performance_percentage": 22.4
+    },
+    {
+      "group": "ETFs",
+      "total_value": 19500.20,
+      "allocation_percentage": 40,
+      "performance_percentage": 12.1
+    },
+    {
+      "group": "Stocks",
+      "total_value": 12187.62,
+      "allocation_percentage": 25,
+      "performance_percentage": 8.5
+    },
+    {
+      "group": "Others",
+      "total_value": 4875.06,
+      "description": "REITs & Bonds",
+      "allocation_percentage": 10,
+      "performance_percentage": 4.2
+    }
+  ],
+  "positions": [
+    {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "group": "Crypto",
+      "quantity": 0.15,
+      "current_price": 68500.00,
+      "total_value": 10275.00,
+      "profit_loss_percentage": 32.1
+    },
+    {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "group": "Crypto",
+      "quantity": 0.75,
+      "current_price": 2550.16,
+      "total_value": 1912.62,
+      "profit_loss_percentage": -5.2
+    },
+    {
+      "symbol": "VOO",
+      "name": "Vanguard S&P 500 ETF",
+      "group": "ETFs",
+      "quantity": 25,
+      "current_price": 510.00,
+      "total_value": 12750.00,
+      "profit_loss_percentage": 14.5
+    },
+    {
+      "symbol": "VXUS",
+      "name": "Vanguard Total Intl Stock",
+      "group": "ETFs",
+      "quantity": 110,
+      "current_price": 61.36,
+      "total_value": 6750.20,
+      "profit_loss_percentage": 7.8
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corp",
+      "group": "Stocks",
+      "quantity": 10,
+      "current_price": 850.50,
+      "total_value": 8505.00,
+      "profit_loss_percentage": 45.2
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "group": "Stocks",
+      "quantity": 20,
+      "current_price": 184.13,
+      "total_value": 3682.62,
+      "profit_loss_percentage": 2.1
+    },
+    {
+      "symbol": "O",
+      "name": "Realty Income Corp",
+      "group": "Others",
+      "quantity": 90,
+      "current_price": 54.17,
+      "total_value": 4875.30,
+      "profit_loss_percentage": 4.2
+    }
+  ],
+  "historical_evolution_6m": [
+    { "month": "Sep 2025", "value": 38000.00 },
+    { "month": "Oct 2025", "value": 39500.00 },
+    { "month": "Nov 2025", "value": 41200.00 },
+    { "month": "Dec 2025", "value": 44800.00 },
+    { "month": "Jan 2026", "value": 46200.00 },
+    { "month": "Feb 2026", "value": 48750.50 }
+  ]
+}
