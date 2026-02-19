@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Header } from "@/components/auth/header";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
@@ -73,10 +74,12 @@ export default async function Home() {
 
             {/* Headline */}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-[1.1] tracking-tight mb-6">
-              Your AI Copilot for{" "}
+              Meet{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-cyan-500">
-                Financial Health
+                CoFinance
               </span>
+              <br />
+              Your AI Money Copilot
             </h1>
 
             {/* Subtitle */}
@@ -169,7 +172,7 @@ export default async function Home() {
                     <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
                       <Bot className="w-4 h-4 text-emerald-500" />
                     </div>
-                    <span className="font-medium text-sm">AI Insight</span>
+                    <span className="font-medium text-sm">CoFinance Insight</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     "You're spending 23% more on dining out. Consider setting a weekly budget of $150."
@@ -273,7 +276,7 @@ export default async function Home() {
                   <Bot className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="font-medium">Finance AI</p>
+                  <p className="font-medium">CoFinance</p>
                   <p className="text-xs text-muted-foreground">Online</p>
                 </div>
               </div>
@@ -366,7 +369,7 @@ export default async function Home() {
               Ready to take control of your finances?
             </h2>
             <p className="text-emerald-50 text-lg max-w-xl mx-auto mb-8">
-              Join thousands of users who are already improving their financial health with AI.
+              Join thousands of users who are already improving their financial health with CoFinance.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -389,14 +392,19 @@ export default async function Home() {
       <footer className="container mx-auto px-6 py-12 border-t">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">Σ</span>
+            <div className="w-8 h-8 relative">
+              <Image
+                src="/logo.png"
+                alt="CoFinance"
+                fill
+                className="object-contain"
+              />
             </div>
-            <span className="font-semibold">Finance AI</span>
+            <span className="font-semibold">CoFinance</span>
           </div>
           
           <p className="text-sm text-muted-foreground">
-            © 2026 Finance AI. All rights reserved.
+            © 2026 CoFinance. All rights reserved.
           </p>
           
           <div className="flex items-center gap-6">
