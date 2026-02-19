@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "type": "Income",
+    "name": "Tech Corp - Monthly Salary",
+    "category": "Salary",
+    "amount": 3200.00,
+    "date": "2026-02-01"
+  },
+  {
+    "id": 2,
+    "type": "Expense",
+    "name": "Monthly Rent",
+    "category": "Housing",
+    "amount": 1200.00,
+    "date": "2026-02-01"
+  },
+  {
+    "id": 3,
+    "type": "Expense",
+    "name": "Starbucks Coffee",
+    "category": "Food & Dining",
+    "amount": 4.50,
+    "date": "2026-02-01"
+  },
+  {
+    "id": 4,
+    "type": "Expense",
+    "name": "Whole Foods Market",
+    "category": "Groceries",
+    "amount": 85.20,
+    "date": "2026-02-02"
+  },
+  {
+    "id": 5,
+    "type": "Expense",
+    "name": "Uber Ride",
+    "category": "Transportation",
+    "amount": 15.40,
+    "date": "2026-02-02"
+  },
+  {
+    "id": 6,
+    "type": "Expense",
+    "name": "Netflix Subscription",
+    "category": "Entertainment",
+    "amount": 15.99,
+    "date": "2026-02-03"
+  },
+  {
+    "id": 7,
+    "type": "Income",
+    "name": "Freelance Web Design",
+    "category": "Freelance",
+    "amount": 450.00,
+    "date": "2026-02-03"
+  },
+  {
+    "id": 8,
+    "type": "Expense",
+    "name": "Shell Gas Station",
+    "category": "Transportation",
+    "amount": 45.00,
+    "date": "2026-02-03"
+  },
+  {
+    "id": 9,
+    "type": "Expense",
+    "name": "Pharmacy - Aspirin",
+    "category": "Health",
+    "amount": 8.50,
+    "date": "2026-02-04"
+  },
+  {
+    "id": 10,
+    "type": "Expense",
+    "name": "Gym Membership",
+    "category": "Health & Fitness",
+    "amount": 49.99,
+    "date": "2026-02-05"
+  },
+  {
+    "id": 11,
+    "type": "Expense",
+    "name": "Local Bakery",
+    "category": "Food & Dining",
+    "amount": 12.30,
+    "date": "2026-02-05"
+  },
+  {
+    "id": 12,
+    "type": "Expense",
+    "name": "Internet Bill",
+    "category": "Utilities",
+    "amount": 60.00,
+    "date": "2026-02-06"
+  },
+  {
+    "id": 13,
+    "type": "Expense",
+    "name": "Spotify Premium",
+    "category": "Entertainment",
+    "amount": 10.99,
+    "date": "2026-02-06"
+  },
+  {
+    "id": 14,
+    "type": "Income",
+    "name": "Sold Old Bike on eBay",
+    "category": "Sales",
+    "amount": 120.00,
+    "date": "2026-02-07"
+  },
+  {
+    "id": 15,
+    "type": "Expense",
+    "name": "Amazon - Books",
+    "category": "Shopping",
+    "amount": 32.50,
+    "date": "2026-02-07"
+  },
+  {
+    "id": 16,
+    "type": "Expense",
+    "name": "Pizza Delivery",
+    "category": "Food & Dining",
+    "amount": 24.00,
+    "date": "2026-02-08"
+  },
+  {
+    "id": 17,
+    "type": "Expense",
+    "name": "Electricity Bill",
+    "category": "Utilities",
+    "amount": 75.40,
+    "date": "2026-02-09"
+  },
+  {
+    "id": 18,
+    "type": "Expense",
+    "name": "Trader Joe's",
+    "category": "Groceries",
+    "amount": 64.10,
+    "date": "2026-02-10"
+  },
+  {
+    "id": 19,
+    "type": "Expense",
+    "name": "Cinema Tickets",
+    "category": "Entertainment",
+    "amount": 28.00,
+    "date": "2026-02-11"
+  },
+  {
+    "id": 20,
+    "type": "Expense",
+    "name": "Subway Tickets",
+    "category": "Transportation",
+    "amount": 20.00,
+    "date": "2026-02-11"
+  },
+  {
+    "id": 21,
+    "type": "Expense",
+    "name": "Water Bill",
+    "category": "Utilities",
+    "amount": 35.20,
+    "date": "2026-02-12"
+  },
+  {
+    "id": 22,
+    "type": "Expense",
+    "name": "H&M - T-shirt",
+    "category": "Shopping",
+    "amount": 15.00,
+    "date": "2026-02-12"
+  },
+  {
+    "id": 23,
+    "type": "Expense",
+    "name": "Dentist Appointment",
+    "category": "Health",
+    "amount": 150.00,
+    "date": "2026-02-13"
+  },
+  {
+    "id": 24,
+    "type": "Expense",
+    "name": "Business Lunch",
+    "category": "Food & Dining",
+    "amount": 45.80,
+    "date": "2026-02-13"
+  },
+  {
+    "id": 25,
+    "type": "Income",
+    "name": "Stock Dividend",
+    "category": "Investments",
+    "amount": 35.50,
+    "date": "2026-02-14"
+  },
+  {
+    "id": 26,
+    "type": "Expense",
+    "name": "Car Wash",
+    "category": "Transportation",
+    "amount": 12.00,
+    "date": "2026-02-14"
+  },
+  {
+    "id": 27,
+    "type": "Expense",
+    "name": "Valentine's Day Dinner",
+    "category": "Food & Dining",
+    "amount": 110.00,
+    "date": "2026-02-14"
+  },
+  {
+    "id": 28,
+    "type": "Expense",
+    "name": "Target - Home Goods",
+    "category": "Shopping",
+    "amount": 55.30,
+    "date": "2026-02-15"
+  },
+  {
+    "id": 29,
+    "type": "Income",
+    "name": "Tech Corp - Mid-Month Bonus",
+    "category": "Salary",
+    "amount": 500.00,
+    "date": "2026-02-15"
+  },
+  {
+    "id": 30,
+    "type": "Expense",
+    "name": "Farmers Market",
+    "category": "Groceries",
+    "amount": 38.00,
+    "date": "2026-02-15"
+  },
+  {
+    "id": 31,
+    "type": "Expense",
+    "name": "Mobile Phone Plan",
+    "category": "Utilities",
+    "amount": 45.00,
+    "date": "2026-02-16"
+  },
+  {
+    "id": 32,
+    "type": "Expense",
+    "name": "Haircut",
+    "category": "Personal Care",
+    "amount": 25.00,
+    "date": "2026-02-16"
+  },
+  {
+    "id": 33,
+    "type": "Expense",
+    "name": "Veterinary Visit",
+    "category": "Pets",
+    "amount": 80.00,
+    "date": "2026-02-17"
+  },
+  {
+    "id": 34,
+    "type": "Expense",
+    "name": "Pet Food",
+    "category": "Pets",
+    "amount": 42.50,
+    "date": "2026-02-17"
+  },
+  {
+    "id": 35,
+    "type": "Expense",
+    "name": "Museum Ticket",
+    "category": "Entertainment",
+    "amount": 18.00,
+    "date": "2026-02-18"
+  },
+  {
+    "id": 36,
+    "type": "Expense",
+    "name": "Coffee Beans",
+    "category": "Groceries",
+    "amount": 16.50,
+    "date": "2026-02-18"
+  },
+  {
+    "id": 37,
+    "type": "Expense",
+    "name": "Uber Eats",
+    "category": "Food & Dining",
+    "amount": 32.10,
+    "date": "2026-02-19"
+  },
+  {
+    "id": 38,
+    "type": "Expense",
+    "name": "Parking Fee",
+    "category": "Transportation",
+    "amount": 8.00,
+    "date": "2026-02-19"
+  },
+  {
+    "id": 39,
+    "type": "Expense",
+    "name": "Vitamins",
+    "category": "Health",
+    "amount": 22.90,
+    "date": "2026-02-20"
+  },
+  {
+    "id": 40,
+    "type": "Income",
+    "name": "Consulting Session",
+    "category": "Freelance",
+    "amount": 150.00,
+    "date": "2026-02-20"
+  },
+  {
+    "id": 41,
+    "type": "Expense",
+    "name": "Concert Ticket",
+    "category": "Entertainment",
+    "amount": 95.00,
+    "date": "2026-02-21"
+  },
+  {
+    "id": 42,
+    "type": "Expense",
+    "name": "Sneakers",
+    "category": "Shopping",
+    "amount": 120.00,
+    "date": "2026-02-21"
+  },
+  {
+    "id": 43,
+    "type": "Expense",
+    "name": "Laundry Service",
+    "category": "Personal Care",
+    "amount": 15.50,
+    "date": "2026-02-22"
+  },
+  {
+    "id": 44,
+    "type": "Expense",
+    "name": "Toll Pass Recharge",
+    "category": "Transportation",
+    "amount": 30.00,
+    "date": "2026-02-22"
+  },
+  {
+    "id": 45,
+    "type": "Expense",
+    "name": "Office Supplies",
+    "category": "Shopping",
+    "amount": 14.20,
+    "date": "2026-02-23"
+  },
+  {
+    "id": 46,
+    "type": "Income",
+    "name": "Tax Refund",
+    "category": "Government",
+    "amount": 340.00,
+    "date": "2026-02-24"
+  },
+  {
+    "id": 47,
+    "type": "Expense",
+    "name": "Yoga Class",
+    "category": "Health & Fitness",
+    "amount": 20.00,
+    "date": "2026-02-24"
+  },
+  {
+    "id": 48,
+    "type": "Expense",
+    "name": "Car Insurance",
+    "category": "Transportation",
+    "amount": 115.00,
+    "date": "2026-02-25"
+  },
+  {
+    "id": 49,
+    "type": "Expense",
+    "name": "Flight Ticket",
+    "category": "Travel",
+    "amount": 350.00,
+    "date": "2026-02-27"
+  },
+  {
+    "id": 50,
+    "type": "Income",
+    "name": "Friend Repaid Loan",
+    "category": "Transfer",
+    "amount": 50.00,
+    "date": "2026-02-28"
+  }
+]

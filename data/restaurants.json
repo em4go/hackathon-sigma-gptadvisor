@@ -1,0 +1,52 @@
+[
+  {
+    "name": "The Rusty Anchor",
+    "distance": "800 meters",
+    "average_price": "$25 - $40",
+    "category": "Seafood & Grill",
+    "rating": 4.6,
+    "address": "123 Ocean Drive, Seaside Cove",
+    "is_open_today": true,
+    "signature_dish": "Garlic Butter Lobster"
+  },
+  {
+    "name": "Luigi's Secret Recipe",
+    "distance": "1900 meters",
+    "average_price": "$15 - $30",
+    "category": "Authentic Italian",
+    "rating": 4.8,
+    "address": "456 Pasta Lane, Little Italy",
+    "is_open_today": false,
+    "signature_dish": "Truffle Mushroom Risotto"
+  },
+  {
+    "name": "Burger Galaxy",
+    "distance": "450 meters",
+    "average_price": "$10 - $20",
+    "category": "Fast Food / Diner",
+    "rating": 4.1,
+    "address": "789 Meteor Boulevard, Downtown",
+    "is_open_today": true,
+    "signature_dish": "Triple Supernova Burger"
+  },
+  {
+    "name": "Green Leaf Oasis",
+    "distance": "4000 meters",
+    "average_price": "$20 - $35",
+    "category": "Vegan & Vegetarian",
+    "rating": 4.9,
+    "address": "101 Maple Street, Eco District",
+    "is_open_today": true,
+    "signature_dish": "Avocado & Quinoa Power Bowl"
+  },
+  {
+    "name": "Spicy Dragon Wok",
+    "distance": "1300 meters",
+    "average_price": "$12 - $25",
+    "category": "Asian Fusion",
+    "rating": 4.4,
+    "address": "222 Lantern Avenue, Chinatown",
+    "is_open_today": true,
+    "signature_dish": "Firecracker Szechuan Chicken"
+  }
+]

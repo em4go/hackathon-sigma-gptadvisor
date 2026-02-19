@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Urban Threads",
+    "distance": "350 meters",
+    "price_range": "$$ - $$$",
+    "category": "Streetwear",
+    "rating": 4.5,
+    "address": "45 Broad Street, Downtown",
+    "is_open_today": true,
+    "popular_item": "Oversized Graphic Hoodies"
+  },
+  {
+    "name": "Velvet Boutique",
+    "distance": "1200 meters",
+    "price_range": "$$$$",
+    "category": "High-end Fashion",
+    "rating": 4.8,
+    "address": "12 Luxury Avenue, The Heights",
+    "is_open_today": true,
+    "popular_item": "Silk Evening Gowns"
+  },
+  {
+    "name": "Thrift & Drift",
+    "distance": "850 meters",
+    "price_range": "$",
+    "category": "Vintage / Second-hand",
+    "rating": 4.7,
+    "address": "99 Retro Lane, Arts District",
+    "is_open_today": false,
+    "popular_item": "80s Denim Jackets"
+  },
+  {
+    "name": "The Denim Project",
+    "distance": "600 meters",
+    "price_range": "$$",
+    "category": "Casual Wear",
+    "rating": 4.2,
+    "address": "200 Market Square",
+    "is_open_today": true,
+    "popular_item": "Custom Fit Jeans"
+  },
+  {
+    "name": "Kicks & Caps",
+    "distance": "200 meters",
+    "price_range": "$$$",
+    "category": "Footwear & Accessories",
+    "rating": 4.6,
+    "address": "8 Alley Walk",
+    "is_open_today": true,
+    "popular_item": "Limited Edition Sneakers"
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "name": "The Blind Beggar",
+    "distance": "150 meters",
+    "average_price": "$5 - $15",
+    "category": "Traditional Irish Pub",
+    "rating": 4.6,
+    "address": "10 Cobblestone Way",
+    "is_open_today": true,
+    "signature_drink": "Guinness on Draft"
+  },
+  {
+    "name": "Neon Nights",
+    "distance": "500 meters",
+    "average_price": "$12 - $25",
+    "category": "Cocktail Bar",
+    "rating": 4.3,
+    "address": "77 Electric Avenue",
+    "is_open_today": true,
+    "signature_drink": "Electric Blue Margarita"
+  },
+  {
+    "name": "The Hoppy Toad",
+    "distance": "900 meters",
+    "average_price": "$8 - $20",
+    "category": "Craft Beer / Microbrewery",
+    "rating": 4.9,
+    "address": "300 Brewer Street",
+    "is_open_today": true,
+    "signature_drink": "Toad's IPA"
+  },
+  {
+    "name": "Velvet Lounge",
+    "distance": "1100 meters",
+    "average_price": "$15 - $35",
+    "category": "Speakeasy",
+    "rating": 4.8,
+    "address": "Hidden Door 4, Basement Level",
+    "is_open_today": false,
+    "signature_drink": "Smoked Old Fashioned"
+  },
+  {
+    "name": "Rusty Keg",
+    "distance": "300 meters",
+    "average_price": "$4 - $10",
+    "category": "Dive Bar",
+    "rating": 4.0,
+    "address": "40 Factory Road",
+    "is_open_today": true,
+    "signature_drink": "Cheap Shot & Beer Combo"
+  }
+]
