@@ -72,7 +72,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#09090b] pb-24">
+    <div className="min-h-screen bg-background pb-24">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -90,7 +90,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">{greeting},</p>
-              <h2 className="text-xl font-semibold text-white capitalize">
+              <h2 className="text-xl font-semibold text-foreground capitalize">
                 {userName}
               </h2>
             </div>
@@ -120,7 +120,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
               </Button>
             </div>
             <div className="mb-4">
-              <span className="text-4xl font-bold text-white">
+              <span className="text-4xl font-bold text-foreground">
                 ${stats.totalBalance.toLocaleString("en-US", {
                   minimumFractionDigits: 2,
                 })}
@@ -155,7 +155,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
                 className="text-primary mb-3"
               >
                 <div className="text-center">
-                  <span className="text-2xl font-bold text-white">
+                  <span className="text-2xl font-bold text-foreground">
                     ${stats.todayBudget.current}
                   </span>
                   <p className="text-xs text-muted-foreground">
@@ -175,7 +175,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
                   Streak
                 </span>
               </div>
-              <div className="text-2xl font-bold text-white mb-1">
+              <div className="text-2xl font-bold text-foreground mb-1">
                 {stats.streak} Days
               </div>
               <p className="text-xs text-muted-foreground">Perfect tracking</p>
@@ -191,7 +191,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
                   Net Worth
                 </span>
               </div>
-              <div className="text-2xl font-bold text-white mb-1">
+              <div className="text-2xl font-bold text-foreground mb-1">
                 + ${stats.netWorth}
               </div>
               <p className="text-xs text-muted-foreground">This month</p>
@@ -202,7 +202,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
         {/* Active Quests */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white">Active Quests</h3>
+            <h3 className="text-lg font-semibold text-foreground">Active Quests</h3>
             <Button variant="link" size="sm" className="text-primary">
               View All
             </Button>
@@ -223,7 +223,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-semibold text-white truncate">
+                        <h4 className="font-semibold text-foreground truncate">
                           {quest.title}
                         </h4>
                         {quest.daysLeft && (

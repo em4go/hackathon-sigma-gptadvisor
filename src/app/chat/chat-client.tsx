@@ -35,11 +35,23 @@ import {
   AttachmentRemove,
 } from "@/components/ai-elements/attachments";
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion";
+import {
+  ModelSelector,
+  ModelSelectorTrigger,
+  ModelSelectorContent,
+  ModelSelectorInput,
+  ModelSelectorList,
+  ModelSelectorEmpty,
+  ModelSelectorGroup,
+  ModelSelectorItem,
+  ModelSelectorLogo,
+} from "@/components/ai-elements/model-selector";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, ChevronDown, Sparkles } from "lucide-react";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
+import { availableModels, defaultModel, type ModelConfig } from "@/lib/models";
 
 const suggestions = [
   "Explain React hooks with examples",
@@ -86,14 +98,17 @@ const ChatPromptInput = ({
   input,
   setInput,
   status,
-  sendMessage,
+  selectedModel,
+  onModelChange,
 }: {
   input: string;
   setInput: (value: string) => void;
   status: "streaming" | "submitted" | "error" | "ready";
-  sendMessage: (message: { role: "user"; parts: Array<{ type: "text"; text: string } | FileUIPart> }) => void;
+  selectedModel: ModelConfig;
+  onModelChange: (model: ModelConfig) => void;
 }) => {
   const attachments = usePromptInputAttachments();
+  const [modelSelectorOpen, setModelSelectorOpen] = useState(false);
 
   const isSubmitDisabled = status === "streaming" || (!input.trim() && attachments.files.length === 0);
 
@@ -139,9 +154,47 @@ const ChatPromptInput = ({
               <PromptInputActionAddAttachments />
             </PromptInputActionMenuContent>
           </PromptInputActionMenu>
-          <PromptInputButton variant="ghost" disabled>
-            <span className="text-xs text-muted-foreground">kimi-k2.5</span>
-          </PromptInputButton>
+          
+          {/* Model Selector */}
+          <ModelSelector open={modelSelectorOpen} onOpenChange={setModelSelectorOpen}>
+            <ModelSelectorTrigger asChild>
+              <PromptInputButton variant="ghost" className="gap-1.5">
+                <Sparkles className="size-3.5" />
+                <span className="text-xs text-muted-foreground">{selectedModel.name}</span>
+                <ChevronDown className="size-3 text-muted-foreground" />
+              </PromptInputButton>
+            </ModelSelectorTrigger>
+            <ModelSelectorContent title="Select AI Model">
+              <ModelSelectorInput placeholder="Search models..." />
+              <ModelSelectorList>
+                <ModelSelectorEmpty>No models found.</ModelSelectorEmpty>
+                <ModelSelectorGroup heading="Available Models">
+                  {availableModels.map((model) => (
+                    <ModelSelectorItem
+                      key={model.id}
+                      onSelect={() => {
+                        onModelChange(model);
+                        setModelSelectorOpen(false);
+                      }}
+                      className="flex items-center gap-2"
+                    >
+                      <ModelSelectorLogo 
+                        provider={model.provider === "google" ? "google" : "openai"} 
+                        className="size-4"
+                      />
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium">{model.name}</span>
+                        <span className="text-xs text-muted-foreground">{model.description}</span>
+                      </div>
+                      {selectedModel.id === model.id && (
+                        <span className="ml-auto text-xs text-primary">✓</span>
+                      )}
+                    </ModelSelectorItem>
+                  ))}
+                </ModelSelectorGroup>
+              </ModelSelectorList>
+            </ModelSelectorContent>
+          </ModelSelector>
         </PromptInputTools>
         <PromptInputSubmit
           disabled={isSubmitDisabled}
@@ -160,9 +213,13 @@ const ChatPromptInput = ({
 
 export const ChatClient = () => {
   const [input, setInput] = useState("");
+  const [selectedModel, setSelectedModel] = useState<ModelConfig>(defaultModel);
 
   const { messages, sendMessage, status } = useChat({
-    transport: new DefaultChatTransport({ api: "/api/chat" }),
+    transport: new DefaultChatTransport({ 
+      api: "/api/chat",
+      body: { model: selectedModel.id },
+    }),
     onError: (error) => {
       toast.error("Error", {
         description: error.message || "Failed to send message",
@@ -280,7 +337,8 @@ export const ChatClient = () => {
             input={input}
             setInput={setInput}
             status={status}
-            sendMessage={sendMessage}
+            selectedModel={selectedModel}
+            onModelChange={setSelectedModel}
           />
         </PromptInput>
       </div>

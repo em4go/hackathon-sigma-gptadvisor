@@ -3,9 +3,10 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { BottomNav } from "@/components/navigation/bottom-nav";
 import { LogoutButton } from "@/components/auth/logout-button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Settings, User, Bell, Shield } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Settings, User, Bell, Shield, Palette } from "lucide-react";
 import Link from "next/link";
+import { ThemeSelector } from "@/components/theme/theme-selector";
 
 export default async function SettingsPage() {
   const session = await auth.api.getSession({
@@ -35,8 +36,28 @@ export default async function SettingsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#09090b] pb-24">
+    <div className="min-h-screen bg-background pb-24">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
+        {/* Theme Settings */}
+        <Card className="bg-card border-border/50 mb-4">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                <Palette className="size-5 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-lg">Appearance</CardTitle>
+                <CardDescription>
+                  Customize the application theme
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <ThemeSelector />
+          </CardContent>
+        </Card>
+
         <Card className="bg-card border-border/50 mb-4">
           <CardContent className="p-6">
             <div className="flex items-center gap-3 mb-6">
@@ -44,7 +65,7 @@ export default async function SettingsPage() {
                 <Settings className="size-6 text-primary" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-white">
+                <h2 className="text-lg font-semibold text-foreground">
                   Settings Page
                 </h2>
                 <p className="text-sm text-muted-foreground">
@@ -61,7 +82,7 @@ export default async function SettingsPage() {
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
                 >
                   <item.icon className="size-5 text-muted-foreground" />
-                  <span className="text-sm font-medium text-white flex-1">
+                  <span className="text-sm font-medium text-foreground flex-1">
                     {item.label}
                   </span>
                 </Link>
