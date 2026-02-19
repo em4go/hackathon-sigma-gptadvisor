@@ -72,7 +72,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#09090b] pb-24">
+    <div className="min-h-screen bg-background pb-24">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -90,7 +90,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">{greeting},</p>
-              <h2 className="text-xl font-semibold text-white capitalize">
+              <h2 className="text-xl font-semibold text-foreground capitalize">
                 {userName}
               </h2>
             </div>

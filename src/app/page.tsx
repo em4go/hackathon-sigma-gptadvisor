@@ -11,7 +11,7 @@ export default async function Home() {
   });
 
   return (
-    <div className="min-h-screen bg-[#09090b]">
+    <div className="min-h-screen bg-background">
       <Header />
       
       {/* Hero Section */}
@@ -25,10 +25,10 @@ export default async function Home() {
 
         {/* Headline */}
         <div className="max-w-4xl">
-          <h1 className="text-5xl md:text-7xl font-semibold text-white leading-[1.1] tracking-tight mb-4">
+          <h1 className="text-5xl md:text-7xl font-semibold text-foreground leading-[1.1] tracking-tight mb-4">
             Founder & Maker
           </h1>
-          <h1 className="text-5xl md:text-7xl font-semibold text-[#52525b] leading-[1.1] tracking-tight">
+          <h1 className="text-5xl md:text-7xl font-semibold text-muted-foreground leading-[1.1] tracking-tight">
             Products and open source tools.
           </h1>
         </div>

@@ -1,4 +1,4 @@
-import { proxypalProvider } from "@/lib/kimi-provider";
+import { getModel } from "@/lib/models";
 import { streamText, UIMessage, convertToModelMessages } from "ai";
 
 // Allow streaming responses up to 30 seconds
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   } = await req.json();
 
   const result = streamText({
-    model: proxypalProvider.chatModel(model || "kimi-k2.5"),
+    model: getModel(model),
     messages: await convertToModelMessages(messages),
     system:
       "You are a helpful AI coding assistant. You help users with programming tasks, debugging, and explaining code concepts.",
