@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BottomNav } from "@/components/navigation/bottom-nav";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -39,9 +40,17 @@ import {
   Utensils,
   ShoppingCart,
   Filter,
+  Search,
+  CalendarIcon,
+  X,
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import transactionData from "@/../data/history.json";
+import portfolioData from "@/../data/inversions.json";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format, isWithinInterval, parseISO, startOfDay, endOfDay } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface DashboardClientProps {
   user: {
@@ -86,6 +95,11 @@ export function DashboardClient({ user }: DashboardClientProps) {
   const [showBalance, setShowBalance] = useState(true);
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
+    from: undefined,
+    to: undefined,
+  });
   
   const userName = user.name || user.email?.split("@")[0] || "User";
   const currentHour = new Date().getHours();
@@ -113,16 +127,39 @@ export function DashboardClient({ user }: DashboardClientProps) {
   const filteredTransactions = useMemo(() => {
     let filtered = transactions;
     
+    // Filter by search query (name or category)
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(
+        (t) =>
+          t.name.toLowerCase().includes(query) ||
+          t.category.toLowerCase().includes(query)
+      );
+    }
+    
+    // Filter by type
     if (typeFilter !== "all") {
       filtered = filtered.filter((t) => t.type === typeFilter);
     }
     
+    // Filter by category
     if (categoryFilter !== "all") {
       filtered = filtered.filter((t) => t.category === categoryFilter);
     }
     
+    // Filter by date range
+    if (dateRange.from && dateRange.to) {
+      filtered = filtered.filter((t) => {
+        const transactionDate = parseISO(t.date);
+        return isWithinInterval(transactionDate, {
+          start: startOfDay(dateRange.from!),
+          end: endOfDay(dateRange.to!),
+        });
+      });
+    }
+    
     return filtered.slice(0, 10);
-  }, [transactions, typeFilter, categoryFilter]);
+  }, [transactions, typeFilter, categoryFilter, searchQuery, dateRange]);
 
   const stats = useMemo(() => {
     const income = transactions
@@ -132,8 +169,14 @@ export function DashboardClient({ user }: DashboardClientProps) {
       .filter((t) => t.type === "Expense")
       .reduce((sum, t) => sum + t.amount, 0);
 
+    const totalBalance = income - expenses;
+    const portfolioValue = (portfolioData as any).portfolio_summary?.current_value || 0;
+    const netWorth = totalBalance + portfolioValue;
+
     return {
-      totalBalance: income - expenses,
+      totalBalance,
+      netWorth,
+      portfolioValue,
       monthlyIncome: income,
       monthlyExpenses: expenses,
       remainingBudget: income - expenses,
@@ -148,7 +191,14 @@ export function DashboardClient({ user }: DashboardClientProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="min-h-screen bg-background pb-24 relative overflow-hidden">
+      {/* Vibrant background for glass effect */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 pointer-events-none" />
+      
+      {/* Decorative blurred circles behind the card */}
+      <div className="fixed top-20 left-10 w-64 h-64 bg-blue-500/60 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed top-32 right-10 w-72 h-72 bg-purple-500/60 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed top-48 left-1/3 w-48 h-48 bg-pink-500/60 rounded-full blur-3xl pointer-events-none" />
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -168,46 +218,54 @@ export function DashboardClient({ user }: DashboardClientProps) {
           </div>
         </div>
 
-        {/* Total Balance Card */}
-        <Card className="mb-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
-          <CardContent className="p-6">
+        {/* Total Balance Card - Glass UI Effect */}
+        <Card
+          className="mb-6 relative overflow-hidden backdrop-blur-[var(--blur)] bg-[var(--glass-bg)] border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl"
+        >
+          {/* Inner glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent pointer-events-none" />
+          <CardContent className="p-6 relative z-10">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-2">
-                <Wallet className="size-5 text-primary" />
+                <TrendingUp className="size-5 text-primary" />
                 <span className="text-muted-foreground font-medium">
-                  Total Balance
+                  Net Worth
                 </span>
               </div>
               <Button
                 variant="ghost"
-                size="icon"
-                className="size-8"
+                size="sm"
+                className="h-8 gap-2 text-muted-foreground"
                 onClick={() => setShowBalance(!showBalance)}
-              >n                {showBalance ? (
-                  <EyeOff className="size-4 text-muted-foreground" />
+              >
+                {showBalance ? (
+                  <EyeOff className="size-4" />
                 ) : (
-                  <Eye className="size-4 text-muted-foreground" />
+                  <Eye className="size-4" />
                 )}
+                <span className="text-xs">{showBalance ? "Hide" : "Show"}</span>
               </Button>
             </div>
             <div className="mb-4">
               <span className="text-4xl font-bold text-foreground">
                 {showBalance
-                  ? formatCurrency(stats.totalBalance)
+                  ? formatCurrency(stats.netWorth)
                   : "••••••"}
               </span>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1.5">
-                <div className="flex items-center justify-center size-6 rounded-full bg-emerald-500/20">
-                  <TrendingUp className="size-3.5 text-emerald-500" />
-                </div>
-                <span className="text-sm text-emerald-500 font-medium">
-                  +12.5%
+
+            {/* Total Balance */}
+            <div className="flex items-center justify-between py-3 border-t border-primary/20">
+              <div className="flex items-center gap-2">
+                <Wallet className="size-4 text-blue-500" />
+                <span className="text-sm text-muted-foreground">
+                  Total Balance
                 </span>
               </div>
-              <span className="text-sm text-muted-foreground">
-                vs last month
+              <span className="text-lg font-semibold text-foreground">
+                {showBalance
+                  ? formatCurrency(stats.totalBalance)
+                  : "••••••"}
               </span>
             </div>
           </CardContent>
@@ -216,7 +274,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
         {/* Monthly Overview Stats */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
           {/* Income */}
-          <Card className="bg-card border-border/50">
+          <Card className="bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 shadow-md">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex items-center justify-center size-8 rounded-full bg-emerald-500/20">
@@ -236,7 +294,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
           </Card>
 
           {/* Expenses */}
-          <Card className="bg-card border-border/50">
+          <Card className="bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 shadow-md">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex items-center justify-center size-8 rounded-full bg-red-500/20">
@@ -256,7 +314,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
           </Card>
 
           {/* Remaining Budget */}
-          <Card className="bg-card border-border/50 col-span-2 md:col-span-1">
+          <Card className="bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 shadow-md col-span-2 md:col-span-1">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex items-center justify-center size-8 rounded-full bg-blue-500/20">
@@ -277,7 +335,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
         </div>
 
         {/* Current Situation Summary */}
-        <Card className="mb-6 bg-card border-border/50">
+        <Card className="mb-6 bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 shadow-md">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-semibold">
               Your Financial Situation
@@ -331,31 +389,103 @@ export function DashboardClient({ user }: DashboardClientProps) {
             </div>
             
             {/* Filters */}
-            <div className="flex gap-2">
-              <Select value={typeFilter} onValueChange={setTypeFilter}>
-                <SelectTrigger className="w-[120px] h-9">
-                  <SelectValue placeholder="Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="Income">Income</SelectItem>
-                  <SelectItem value="Expense">Expense</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex flex-col gap-2">
+              {/* Search Input */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search by name or category..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9 h-9"
+                />
+              </div>
               
-              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                <SelectTrigger className="w-[160px] h-9">
-                  <SelectValue placeholder="Category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {/* Type, Category and Date Filters */}
+              <div className="flex flex-wrap gap-2">
+                <Select value={typeFilter} onValueChange={setTypeFilter}>
+                  <SelectTrigger className="w-[120px] h-9">
+                    <SelectValue placeholder="Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="Income">Income</SelectItem>
+                    <SelectItem value="Expense">Expense</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                  <SelectTrigger className="w-[160px] h-9">
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    {categories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {/* Date Range Picker */}
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "h-9 justify-start text-left font-normal",
+                        !dateRange.from && !dateRange.to && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {dateRange.from ? (
+                        dateRange.to ? (
+                          <>
+                            {format(dateRange.from, "LLL dd")} - {format(dateRange.to, "LLL dd")}
+                          </>
+                        ) : (
+                          format(dateRange.from, "LLL dd")
+                        )
+                      ) : (
+                        <span>Pick dates</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      initialFocus
+                      mode="range"
+                      defaultMonth={dateRange.from}
+                      selected={{
+                        from: dateRange.from,
+                        to: dateRange.to,
+                      }}
+                      onSelect={(range) => {
+                        setDateRange({
+                          from: range?.from,
+                          to: range?.to,
+                        });
+                      }}
+                      numberOfMonths={1}
+                    />
+                  </PopoverContent>
+                </Popover>
+
+                {/* Clear Date Filter */}
+                {dateRange.from && dateRange.to && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 px-2"
+                    onClick={() => setDateRange({ from: undefined, to: undefined })}
+                  >
+                    <X className="h-4 w-4" />
+                    <span className="sr-only">Clear date filter</span>
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -386,7 +516,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
               return (
                 <Card
                   key={transaction.id}
-                  className="bg-card border-border/50 hover:bg-accent/50 transition-colors"
+                  className="bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors shadow-md"
                 >
                   <CardContent className="p-4">
                     <div className="flex items-center gap-4">

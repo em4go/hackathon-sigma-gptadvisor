@@ -1,6 +1,6 @@
 "use client";
 
-import type { UIMessage, FileUIPart } from "ai";
+import type { UIMessage, FileUIPart, ToolUIPart } from "ai";
 
 import {
   Conversation,
@@ -13,6 +13,7 @@ import {
   MessageContent,
   MessageResponse,
 } from "@/components/ai-elements/message";
+
 import {
   PromptInput,
   PromptInputActionAddAttachments,
@@ -46,6 +47,10 @@ import {
   ModelSelectorItem,
   ModelSelectorLogo,
 } from "@/components/ai-elements/model-selector";
+import {
+  ToolResultRenderer,
+  hasRichContent,
+} from "@/components/ai-elements/tool-result-renderer";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { MessageCircle, ChevronDown, Sparkles } from "lucide-react";
@@ -254,6 +259,9 @@ export const ChatClient = ({ chatId, initialMessages }: ChatClientProps) => {
             messages.map((message: UIMessage) => {
               const textParts = message.parts.filter((p) => p.type === "text");
               const fileParts = message.parts.filter((p) => p.type === "file") as FileUIPart[];
+              const toolParts = message.parts.filter((p) => 
+                p.type === "dynamic-tool" || p.type.startsWith("tool-")
+              ) as unknown as ToolUIPart[];
               
               return (
                 <Message key={message.id} from={message.role}>
@@ -273,6 +281,22 @@ export const ChatClient = ({ chatId, initialMessages }: ChatClientProps) => {
                     <MessageResponse>
                       {textParts.map((part) => part.text).join("")}
                     </MessageResponse>
+                    
+                    {/* Rich Tool Results - displayed directly in message */}
+                    {toolParts.length > 0 && (
+                      <div className="mt-4 space-y-4">
+                        {toolParts.map((toolPart, index) => (
+                          hasRichContent(toolPart.output) && (
+                            <ToolResultRenderer 
+                              key={index}
+                              output={toolPart.output} 
+                            />
+                          )
+                        ))}
+                      </div>
+                    )}
+                    
+
                   </MessageContent>
                 </Message>
               );
