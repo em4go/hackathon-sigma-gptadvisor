@@ -80,12 +80,12 @@ The app supports multiple AI providers through `src/lib/models.ts`:
 
 ```bash
 # Clone and install
-git clone <repo-url>
+git clone https://github.com/em4go/hackathon-sigma-gptadvisor
 cd cofinance
 bun install
 
 # Set up environment variables
-cp .env.example .env.local
+cp .env.example .env
 
 # IMPORTANT: Generate a secure secret for Better Auth
 # On macOS/Linux:
@@ -414,13 +414,3 @@ bun install
 - [ ] Mobile app with React Native
 - [ ] Push notifications for spending alerts
 - [ ] Export reports to PDF
-
-## License
-
-MIT License
-
-## Acknowledgments
-
-- [Vercel AI SDK](https://sdk.vercel.ai/)
-- [Better Auth](https://www.better-auth.com/)
-- [shadcn/ui](https://ui.shadcn.com/)
