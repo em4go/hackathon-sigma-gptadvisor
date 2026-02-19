@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Settings, User, Bell, Shield, Palette } from "lucide-react";
 import Link from "next/link";
 import { ThemeSelector } from "@/components/theme/theme-selector";
+import { BankSyncButton } from "@/components/settings/bank-sync-button";
 
 export default async function SettingsPage() {
   const session = await auth.api.getSession({
@@ -55,6 +56,26 @@ export default async function SettingsPage() {
           </CardHeader>
           <CardContent>
             <ThemeSelector />
+          </CardContent>
+        </Card>
+
+        {/* Bank Integration */}
+        <Card className="bg-card border-border/50 mb-4">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                <Settings className="size-5 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-lg">Bank Integration</CardTitle>
+                <CardDescription>
+                  Connect your bank accounts to sync your data
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <BankSyncButton />
           </CardContent>
         </Card>
 

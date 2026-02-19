@@ -1,5 +1,5 @@
-import { getModel } from "@/lib/models";
-import { streamText, UIMessage, convertToModelMessages } from "ai";
+import { createAgentUIStreamResponse, UIMessage } from "ai";
+import { createPersonalAdvisorAgent } from "@/lib/agent";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -13,12 +13,12 @@ export async function POST(req: Request) {
     model: string;
   } = await req.json();
 
-  const result = streamText({
-    model: getModel(model),
-    messages: await convertToModelMessages(messages),
-    system:
-      "You are a helpful AI coding assistant. You help users with programming tasks, debugging, and explaining code concepts.",
-  });
+  // Create the agent with the selected model
+  const agent = createPersonalAdvisorAgent(model);
 
-  return result.toUIMessageStreamResponse();
+  // Use the agent to generate a streaming response
+  return createAgentUIStreamResponse({
+    agent,
+    uiMessages: messages,
+  });
 }
