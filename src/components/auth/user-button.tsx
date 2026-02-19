@@ -42,9 +42,9 @@ export function UserButton({ user }: UserButtonProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full hover:bg-white/10">
+        <Button variant="ghost" className="relative h-9 w-9 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-white text-black text-xs font-medium">
+            <AvatarFallback className="bg-emerald-500 text-white text-xs font-medium">
               {initials}
             </AvatarFallback>
           </Avatar>

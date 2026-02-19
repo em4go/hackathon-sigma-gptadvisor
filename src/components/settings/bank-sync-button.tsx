@@ -19,6 +19,7 @@ const BANKS = [
   { id: "sabadell", name: "Banco Sabadell", color: "#0066B3" },
   { id: "bankinter", name: "Bankinter", color: "#0077C8" },
   { id: "ing", name: "ING", color: "#FF6600" },
+  { id: "myinvestor", name: "MyInvestor", color: "#00A9CE" },
 ];
 
 interface BankButtonProps {

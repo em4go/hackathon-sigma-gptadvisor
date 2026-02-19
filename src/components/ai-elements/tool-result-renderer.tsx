@@ -12,6 +12,16 @@ import {
   type DrinkPlace,
 } from "./tool-result-cards";
 import { TransactionSummary, type TransactionSummaryData } from "./transaction-summary";
+import {
+  PortfolioCard,
+  GoalsCard,
+  SpendingCard,
+  FinancialAdviceCard,
+  type PortfolioData,
+  type GoalsData,
+  type SpendingData,
+  type FinancialAdviceData,
+} from "./financial-cards";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -21,6 +31,10 @@ import {
   TrendingUp,
   Info,
   Store as StoreIcon,
+  PieChart,
+  Target,
+  BarChart3,
+  DollarSign,
 } from "lucide-react";
 
 // Type for tool output detection
@@ -30,6 +44,10 @@ type ToolOutputType =
   | "drink-places" 
   | "transactions" 
   | "data-summary"
+  | "portfolio"
+  | "goals"
+  | "spending"
+  | "financial-advice"
   | "unknown";
 
 // Helper to detect the type of tool output
@@ -37,6 +55,31 @@ function detectOutputType(output: unknown): ToolOutputType {
   if (!output || typeof output !== "object") return "unknown";
   
   const obj = output as Record<string, unknown>;
+  
+  // Check for portfolio (has summary with totalInvested)
+  if (obj.summary && typeof obj.summary === "object" &&
+      (obj.summary as Record<string, unknown>).totalInvested !== undefined &&
+      (obj.summary as Record<string, unknown>).currentValue !== undefined) {
+    return "portfolio";
+  }
+  
+  // Check for goals (has goals array with reference_price)
+  if (Array.isArray(obj.goals) && obj.goals.length > 0) {
+    const firstGoal = obj.goals[0] as Record<string, unknown>;
+    if (firstGoal.reference_price !== undefined && firstGoal.description !== undefined) {
+      return "goals";
+    }
+  }
+  
+  // Check for spending analysis (has categoryBreakdown)
+  if (obj.categoryBreakdown && Array.isArray(obj.categoryBreakdown)) {
+    return "spending";
+  }
+  
+  // Check for financial advice (has recommendations array)
+  if (Array.isArray(obj.recommendations)) {
+    return "financial-advice";
+  }
   
   // Check for restaurants
   if (Array.isArray(obj.restaurants) && obj.restaurants.length > 0) {
@@ -219,6 +262,58 @@ export const ToolResultRenderer = ({ output, className }: ToolResultRendererProp
   const outputType = detectOutputType(output);
 
   switch (outputType) {
+    case "portfolio": {
+      const data = output as PortfolioData;
+      return (
+        <div className={cn("space-y-3", className)}>
+          <div className="flex items-center gap-2">
+            <PieChart className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-muted-foreground">{data.message}</span>
+          </div>
+          <PortfolioCard data={data} />
+        </div>
+      );
+    }
+
+    case "goals": {
+      const data = output as GoalsData;
+      return (
+        <div className={cn("space-y-3", className)}>
+          <div className="flex items-center gap-2">
+            <Target className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-muted-foreground">{data.message}</span>
+          </div>
+          <GoalsCard data={data} />
+        </div>
+      );
+    }
+
+    case "spending": {
+      const data = output as SpendingData;
+      return (
+        <div className={cn("space-y-3", className)}>
+          <div className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-muted-foreground">{data.message}</span>
+          </div>
+          <SpendingCard data={data} />
+        </div>
+      );
+    }
+
+    case "financial-advice": {
+      const data = output as FinancialAdviceData;
+      return (
+        <div className={cn("space-y-3", className)}>
+          <div className="flex items-center gap-2">
+            <DollarSign className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-muted-foreground">{data.message}</span>
+          </div>
+          <FinancialAdviceCard data={data} />
+        </div>
+      );
+    }
+
     case "restaurants": {
       const data = output as { restaurants: Restaurant[]; count: number; message: string };
       return (
@@ -306,6 +401,10 @@ export type {
   Store, 
   DrinkPlace, 
   TransactionSummaryData,
+  PortfolioData,
+  GoalsData,
+  SpendingData,
+  FinancialAdviceData,
   ToolOutputType 
 };
 export { detectOutputType };
