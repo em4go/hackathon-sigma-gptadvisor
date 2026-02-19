@@ -141,7 +141,7 @@ src/
 │   ├── dashboard/
 │   │   ├── page.tsx                # Dashboard (Server Component)
 │   │   └── dashboard-client.tsx    # Dashboard UI (Client Component)
-│   ├── chat/                       # Chat interface pages
+│   ├── chat/                       # Chat interface pages 
 │   ├── login/                      # Auth pages
 │   └── page.tsx                    # Landing page
 ├── components/
