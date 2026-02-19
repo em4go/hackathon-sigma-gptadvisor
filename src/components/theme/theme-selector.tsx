@@ -15,20 +15,20 @@ type ThemeOption = {
 const themes: ThemeOption[] = [
   {
     value: "light",
-    label: "Claro",
-    description: "Tema claro para uso diurno",
+    label: "Light",
+    description: "Light theme for daytime use",
     icon: Sun,
   },
   {
     value: "dark",
-    label: "Oscuro",
-    description: "Tema oscuro para uso nocturno",
+    label: "Dark",
+    description: "Dark theme for nighttime use",
     icon: Moon,
   },
   {
     value: "system",
-    label: "Automático",
-    description: "Sigue la configuración del sistema",
+    label: "Automatic",
+    description: "Follows system settings",
     icon: Monitor,
   },
 ];

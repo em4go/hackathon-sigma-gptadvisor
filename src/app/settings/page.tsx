@@ -46,9 +46,9 @@ export default async function SettingsPage() {
                 <Palette className="size-5 text-primary" />
               </div>
               <div>
-                <CardTitle className="text-lg">Apariencia</CardTitle>
+                <CardTitle className="text-lg">Appearance</CardTitle>
                 <CardDescription>
-                  Personaliza el tema de la aplicación
+                  Customize the application theme
                 </CardDescription>
               </div>
             </div>
