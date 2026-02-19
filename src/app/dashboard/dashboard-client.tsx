@@ -47,6 +47,8 @@ import {
 import { useState, useMemo } from "react";
 import transactionData from "@/../data/history.json";
 import portfolioData from "@/../data/inversions.json";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CashFlowChart } from "@/components/charts/cash-flow-chart";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format, isWithinInterval, parseISO, startOfDay, endOfDay } from "date-fns";
@@ -220,10 +222,10 @@ export function DashboardClient({ user }: DashboardClientProps) {
 
         {/* Total Balance Card - Glass UI Effect */}
         <Card
-          className="mb-6 relative overflow-hidden backdrop-blur-[var(--blur)] bg-[var(--glass-bg)] border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl"
+          className="mb-6 relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl"
         >
           {/* Inner glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
           <CardContent className="p-6 relative z-10">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -274,8 +276,9 @@ export function DashboardClient({ user }: DashboardClientProps) {
         {/* Monthly Overview Stats */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
           {/* Income */}
-          <Card className="bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 shadow-md">
-            <CardContent className="p-4">
+          <Card className="relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+            <CardContent className="p-4 relative z-10">
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex items-center justify-center size-8 rounded-full bg-emerald-500/20">
                   <ArrowDownRight className="size-4 text-emerald-500" />
@@ -294,8 +297,9 @@ export function DashboardClient({ user }: DashboardClientProps) {
           </Card>
 
           {/* Expenses */}
-          <Card className="bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 shadow-md">
-            <CardContent className="p-4">
+          <Card className="relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+            <CardContent className="p-4 relative z-10">
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex items-center justify-center size-8 rounded-full bg-red-500/20">
                   <ArrowUpRight className="size-4 text-red-500" />
@@ -314,8 +318,9 @@ export function DashboardClient({ user }: DashboardClientProps) {
           </Card>
 
           {/* Remaining Budget */}
-          <Card className="bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 shadow-md col-span-2 md:col-span-1">
-            <CardContent className="p-4">
+          <Card className="relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl col-span-2 md:col-span-1">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+            <CardContent className="p-4 relative z-10">
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex items-center justify-center size-8 rounded-full bg-blue-500/20">
                   <Receipt className="size-4 text-blue-500" />
@@ -335,13 +340,14 @@ export function DashboardClient({ user }: DashboardClientProps) {
         </div>
 
         {/* Current Situation Summary */}
-        <Card className="mb-6 bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 shadow-md">
-          <CardHeader className="pb-3">
+        <Card className="mb-6 relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+          <CardHeader className="pb-3 relative z-10">
             <CardTitle className="text-base font-semibold">
               Your Financial Situation
             </CardTitle>
           </CardHeader>
-          <CardContent className="pt-0">
+          <CardContent className="pt-0 relative z-10">
             <div className="space-y-4">
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -373,6 +379,51 @@ export function DashboardClient({ user }: DashboardClientProps) {
                 </div>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Analytics Tabs */}
+        <Card className="mb-6 relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+          <CardHeader className="pb-3 relative z-10">
+            <CardTitle className="text-base font-semibold">
+              Financial Analytics
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0 relative z-10">
+            <Tabs defaultValue="cashflow" className="w-full">
+              <TabsList className="grid w-full grid-cols-3 mb-4 bg-white/20 backdrop-blur-sm">
+                <TabsTrigger value="cashflow" className="text-xs sm:text-sm">Cash Flow</TabsTrigger>
+                <TabsTrigger value="categories" className="text-xs sm:text-sm">Categories</TabsTrigger>
+                <TabsTrigger value="trends" className="text-xs sm:text-sm">Trends</TabsTrigger>
+              </TabsList>
+              <TabsContent value="cashflow" className="mt-0">
+                <CashFlowChart transactions={transactions} />
+                <p className="text-xs text-muted-foreground mt-3 text-center">
+                  Track your income, expenses, and net balance over time
+                </p>
+              </TabsContent>
+              <TabsContent value="categories" className="mt-0">
+                <div className="flex items-center justify-center h-64 text-muted-foreground">
+                  <div className="text-center">
+                    <p className="text-sm mb-2">Category breakdown coming soon</p>
+                    <p className="text-xs text-muted-foreground">
+                      Visualize spending by category
+                    </p>
+                  </div>
+                </div>
+              </TabsContent>
+              <TabsContent value="trends" className="mt-0">
+                <div className="flex items-center justify-center h-64 text-muted-foreground">
+                  <div className="text-center">
+                    <p className="text-sm mb-2">Spending trends coming soon</p>
+                    <p className="text-xs text-muted-foreground">
+                      Identify patterns in your financial behavior
+                    </p>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
 
@@ -516,9 +567,10 @@ export function DashboardClient({ user }: DashboardClientProps) {
               return (
                 <Card
                   key={transaction.id}
-                  className="bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors shadow-md"
+                  className="relative overflow-hidden backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl hover:bg-white/90 dark:hover:bg-slate-800/90 transition-colors"
                 >
-                  <CardContent className="p-4">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
+                  <CardContent className="p-4 relative z-10">
                     <div className="flex items-center gap-4">
                       <div
                         className={`flex items-center justify-center size-10 rounded-full shrink-0 ${
