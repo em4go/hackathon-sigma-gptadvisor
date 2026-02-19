@@ -1,19 +1,39 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
-import { CircularProgress } from "@/components/ui/circular-progress";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BottomNav } from "@/components/navigation/bottom-nav";
 import {
   Eye,
-  Trophy,
+  EyeOff,
   TrendingUp,
-  Flame,
-  PiggyBank,
+  Wallet,
+  ArrowUpRight,
+  ArrowDownRight,
+  Receipt,
+  ShoppingBag,
+  Coffee,
+  Car,
+  Home,
+  Zap,
+  Briefcase,
+  Gift,
+  Heart,
+  Plane,
+  Smartphone,
+  Dumbbell,
+  Scissors,
+  HeartPulse,
+  Clapperboard,
+  Music,
+  Monitor,
+  Utensils,
+  ShoppingCart,
 } from "lucide-react";
+import { useState, useMemo } from "react";
+import transactionData from "@/../data/history.json";
 
 interface DashboardClientProps {
   user: {
@@ -23,7 +43,39 @@ interface DashboardClientProps {
   };
 }
 
+interface Transaction {
+  id: number;
+  type: "Income" | "Expense";
+  name: string;
+  category: string;
+  amount: number;
+  date: string;
+}
+
+const categoryIcons: Record<string, React.ElementType> = {
+  "Food & Dining": Utensils,
+  Groceries: ShoppingCart,
+  Shopping: ShoppingBag,
+  Transportation: Car,
+  Housing: Home,
+  Utilities: Zap,
+  Salary: Briefcase,
+  Freelance: Briefcase,
+  Investments: TrendingUp,
+  Sales: Gift,
+  Entertainment: Clapperboard,
+  Health: HeartPulse,
+  "Health & Fitness": Dumbbell,
+  "Personal Care": Scissors,
+  Pets: Heart,
+  Travel: Plane,
+  Government: Receipt,
+  Transfer: ArrowUpRight,
+  default: Receipt,
+};
+
 export function DashboardClient({ user }: DashboardClientProps) {
+  const [showBalance, setShowBalance] = useState(true);
   const userName = user.name || user.email?.split("@")[0] || "User";
   const currentHour = new Date().getHours();
   const greeting =
@@ -33,43 +85,38 @@ export function DashboardClient({ user }: DashboardClientProps) {
         ? "Good afternoon"
         : "Good evening";
 
-  // Mock data - replace with real data from your API
-  const stats = {
-    totalBalance: 12450.0,
-    balanceChange: 4.2,
-    todayBudget: { current: 12, total: 50 },
-    streak: 14,
-    netWorth: 850,
-    xp: { current: 850, total: 1000, level: 5 },
-  };
+  // Process real data from history.json
+  const transactions = useMemo(() => {
+    return (transactionData as Transaction[]).sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }, []);
 
-  const quests = [
-    {
-      id: 1,
-      icon: Flame,
-      iconBg: "bg-orange-500/20",
-      iconColor: "text-orange-500",
-      title: "7-Day No-Spend",
-      description: "Avoid non-essential spending.",
-      progress: 3,
-      total: 7,
-      xp: 50,
-      daysLeft: 3,
-      color: "bg-orange-500",
-    },
-    {
-      id: 2,
-      icon: PiggyBank,
-      iconBg: "bg-blue-500/20",
-      iconColor: "text-blue-500",
-      title: "Coffee Fast",
-      description: "Skip the cafe, save money.",
-      progress: 24,
-      total: 30,
-      saved: 24,
-      color: "bg-blue-500",
-    },
-  ];
+  const stats = useMemo(() => {
+    const income = transactions
+      .filter((t) => t.type === "Income")
+      .reduce((sum, t) => sum + t.amount, 0);
+    const expenses = transactions
+      .filter((t) => t.type === "Expense")
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    return {
+      totalBalance: income - expenses,
+      monthlyIncome: income,
+      monthlyExpenses: expenses,
+      remainingBudget: income - expenses,
+    };
+  }, [transactions]);
+
+  // Get recent transactions (last 10)
+  const recentTransactions = transactions.slice(0, 10);
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+  };
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -77,17 +124,12 @@ export function DashboardClient({ user }: DashboardClientProps) {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="relative">
-              <Avatar className="size-12 border-2 border-primary/20">
-                <AvatarImage src={user.image || undefined} />
-                <AvatarFallback className="bg-primary text-primary-foreground text-lg">
-                  {userName[0]?.toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
-                Lvl {stats.xp.level}
-              </div>
-            </div>
+            <Avatar className="size-12 border-2 border-primary/20">
+              <AvatarImage src={user.image || undefined} />
+              <AvatarFallback className="bg-primary text-primary-foreground text-lg">
+                {userName[0]?.toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
             <div>
               <p className="text-sm text-muted-foreground">{greeting},</p>
               <h2 className="text-xl font-semibold text-foreground capitalize">
@@ -95,178 +137,246 @@ export function DashboardClient({ user }: DashboardClientProps) {
               </h2>
             </div>
           </div>
-
-          {/* XP Progress */}
-          <div className="text-right">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-medium text-primary">SAVER</span>
-              <span className="text-xs text-muted-foreground">
-                {stats.xp.current}/{stats.xp.total} XP
-              </span>
-            </div>
-            <div className="w-24">
-              <Progress value={(stats.xp.current / stats.xp.total) * 100} />
-            </div>
-          </div>
         </div>
 
         {/* Total Balance Card */}
-        <Card className="mb-6 bg-gradient-to-br from-card to-card/50 border-border/50">
+        <Card className="mb-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
           <CardContent className="p-6">
             <div className="flex items-start justify-between mb-4">
-              <span className="text-muted-foreground">Total Balance</span>
-              <Button variant="ghost" size="icon" className="size-8">
-                <Eye className="size-4 text-muted-foreground" />
+              <div className="flex items-center gap-2">
+                <Wallet className="size-5 text-primary" />
+                <span className="text-muted-foreground font-medium">
+                  Total Balance
+                </span>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8"
+                onClick={() => setShowBalance(!showBalance)}
+              >n                {showBalance ? (
+                  <EyeOff className="size-4 text-muted-foreground" />
+                ) : (
+                  <Eye className="size-4 text-muted-foreground" />
+                )}
               </Button>
             </div>
             <div className="mb-4">
               <span className="text-4xl font-bold text-foreground">
-                ${stats.totalBalance.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                })}
+                {showBalance
+                  ? formatCurrency(stats.totalBalance)
+                  : "••••••"}
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <Badge
-                variant="secondary"
-                className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30"
-              >
-                <TrendingUp className="size-3 mr-1" />+
-                {stats.balanceChange}%
-              </Badge>
-              <span className="text-sm text-muted-foreground">vs last month</span>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1.5">
+                <div className="flex items-center justify-center size-6 rounded-full bg-emerald-500/20">
+                  <TrendingUp className="size-3.5 text-emerald-500" />
+                </div>
+                <span className="text-sm text-emerald-500 font-medium">
+                  +12.5%
+                </span>
+              </div>
+              <span className="text-sm text-muted-foreground">
+                vs last month
+              </span>
             </div>
           </CardContent>
         </Card>
 
-        {/* Grid Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          {/* Today's Budget */}
-          <Card className="bg-card border-border/50 row-span-2">
-            <CardContent className="p-4 flex flex-col items-center justify-center h-full">
-              <span className="text-muted-foreground text-sm mb-4">
-                Today&apos;s Budget
-              </span>
-              <CircularProgress
-                value={stats.todayBudget.current}
-                max={stats.todayBudget.total}
-                size={100}
-                strokeWidth={6}
-                className="text-primary mb-3"
-              >
-                <div className="text-center">
-                  <span className="text-2xl font-bold text-foreground">
-                    ${stats.todayBudget.current}
-                  </span>
-                  <p className="text-xs text-muted-foreground">
-                    of ${stats.todayBudget.total}
-                  </p>
+        {/* Monthly Overview Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+          {/* Income */}
+          <Card className="bg-card border-border/50">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center justify-center size-8 rounded-full bg-emerald-500/20">
+                  <ArrowDownRight className="size-4 text-emerald-500" />
                 </div>
-              </CircularProgress>
-            </CardContent>
-          </Card>
-
-          {/* Streak */}
-          <Card className="bg-card border-border/50">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Trophy className="size-4 text-yellow-500" />
-                <span className="text-xs font-bold text-yellow-500 uppercase tracking-wide">
-                  Streak
+                <span className="text-xs font-medium text-emerald-500 uppercase tracking-wide">
+                  Income
                 </span>
               </div>
-              <div className="text-2xl font-bold text-foreground mb-1">
-                {stats.streak} Days
-              </div>
-              <p className="text-xs text-muted-foreground">Perfect tracking</p>
-            </CardContent>
-          </Card>
-
-          {/* Net Worth */}
-          <Card className="bg-card border-border/50">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="size-4 text-purple-500" />
-                <span className="text-xs font-bold text-purple-500 uppercase tracking-wide">
-                  Net Worth
-                </span>
-              </div>
-              <div className="text-2xl font-bold text-foreground mb-1">
-                + ${stats.netWorth}
+              <div className="text-xl font-bold text-foreground mb-1">
+                {showBalance
+                  ? formatCurrency(stats.monthlyIncome)
+                  : "••••"}
               </div>
               <p className="text-xs text-muted-foreground">This month</p>
             </CardContent>
           </Card>
+
+          {/* Expenses */}
+          <Card className="bg-card border-border/50">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center justify-center size-8 rounded-full bg-red-500/20">
+                  <ArrowUpRight className="size-4 text-red-500" />
+                </div>
+                <span className="text-xs font-medium text-red-500 uppercase tracking-wide">
+                  Expenses
+                </span>
+              </div>
+              <div className="text-xl font-bold text-foreground mb-1">
+                {showBalance
+                  ? formatCurrency(stats.monthlyExpenses)
+                  : "••••"}
+              </div>
+              <p className="text-xs text-muted-foreground">This month</p>
+            </CardContent>
+          </Card>
+
+          {/* Remaining Budget */}
+          <Card className="bg-card border-border/50 col-span-2 md:col-span-1">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center justify-center size-8 rounded-full bg-blue-500/20">
+                  <Receipt className="size-4 text-blue-500" />
+                </div>
+                <span className="text-xs font-medium text-blue-500 uppercase tracking-wide">
+                  Remaining
+                </span>
+              </div>
+              <div className="text-xl font-bold text-foreground mb-1">
+                {showBalance
+                  ? formatCurrency(stats.remainingBudget)
+                  : "••••"}
+              </div>
+              <p className="text-xs text-muted-foreground">Available to spend</p>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Active Quests */}
-        <div className="mb-4">
+        {/* Current Situation Summary */}
+        <Card className="mb-6 bg-card border-border/50">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold">
+              Your Financial Situation
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="space-y-4">
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">
+                    Budget Usage
+                  </span>
+                  <span className="text-sm font-medium">60%</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-primary rounded-full w-[60%]" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4 pt-2">
+                <div className="text-center p-3 bg-muted/50 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Savings Rate
+                  </p>
+                  <p className="text-lg font-semibold text-emerald-500">
+                    40%
+                  </p>
+                </div>
+                <div className="text-center p-3 bg-muted/50 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Daily Budget
+                  </p>
+                  <p className="text-lg font-semibold">
+                    {showBalance ? "$46" : "•••"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recent Transactions */}
+        <div>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-foreground">Active Quests</h3>
+            <h3 className="text-lg font-semibold text-foreground">
+              Recent Transactions
+            </h3>
             <Button variant="link" size="sm" className="text-primary">
               View All
             </Button>
           </div>
 
           <div className="space-y-3">
-            {quests.map((quest) => (
-              <Card
-                key={quest.id}
-                className="bg-card border-border/50 overflow-hidden"
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3 mb-3">
-                    <div
-                      className={`${quest.iconBg} p-2.5 rounded-xl shrink-0`}
-                    >
-                      <quest.icon className={`size-5 ${quest.iconColor}`} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-semibold text-foreground truncate">
-                          {quest.title}
-                        </h4>
-                        {quest.daysLeft && (
-                          <Badge variant="secondary" className="text-xs shrink-0">
-                            {quest.daysLeft} days left
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        {quest.description}
-                      </p>
-                    </div>
-                  </div>
+            {recentTransactions.map((transaction) => {
+              const Icon =
+                categoryIcons[transaction.category] || categoryIcons.default;
+              const isExpense = transaction.type === "Expense";
 
-                  <div className="mt-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs text-muted-foreground">
-                        {quest.xp
-                          ? `DAY ${quest.progress} OF ${quest.total}`
-                          : `${quest.progress} DAYS`}
-                      </span>
-                      {quest.xp ? (
-                        <span className="text-xs text-orange-500 font-medium">
-                          +{quest.xp} XP
-                        </span>
-                      ) : (
-                        <span className="text-xs text-blue-500 font-medium">
-                          ${quest.saved} SAVED
-                        </span>
-                      )}
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+              // Format date
+              const dateObj = new Date(transaction.date);
+              const today = new Date();
+              const yesterday = new Date(today);
+              yesterday.setDate(yesterday.getDate() - 1);
+
+              let dateDisplay = transaction.date;
+              if (dateObj.toDateString() === today.toDateString()) {
+                dateDisplay = "Today";
+              } else if (dateObj.toDateString() === yesterday.toDateString()) {
+                dateDisplay = "Yesterday";
+              } else {
+                dateDisplay = dateObj.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                });
+              }
+
+              return (
+                <Card
+                  key={transaction.id}
+                  className="bg-card border-border/50 hover:bg-accent/50 transition-colors"
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-4">
                       <div
-                        className={`h-full ${quest.color} rounded-full transition-all duration-500`}
-                        style={{
-                          width: `${(quest.progress / quest.total) * 100}%`,
-                        }}
-                      />
+                        className={`flex items-center justify-center size-10 rounded-full shrink-0 ${
+                          isExpense ? "bg-red-500/10" : "bg-emerald-500/10"
+                        }`}
+                      >
+                        <Icon
+                          className={`size-5 ${
+                            isExpense ? "text-red-500" : "text-emerald-500"
+                          }`}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-medium text-foreground truncate">
+                            {transaction.name}
+                          </h4>
+                          <span
+                            className={`font-semibold shrink-0 ${
+                              isExpense
+                                ? "text-red-500"
+                                : "text-emerald-500"
+                            }`}
+                          >
+                            {isExpense ? "-" : "+"}
+                            {showBalance
+                              ? formatCurrency(transaction.amount)
+                              : "••••"}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <Badge
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {transaction.category}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {dateDisplay}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </div>
