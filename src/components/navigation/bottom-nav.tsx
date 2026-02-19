@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Home, MessageCircle, Users, Settings } from "lucide-react";
+import { Home, MessageCircle, PieChart, Settings } from "lucide-react";
 
 const navItems = [
   {
@@ -17,9 +17,9 @@ const navItems = [
     icon: MessageCircle,
   },
   {
-    href: "/social",
-    label: "Social",
-    icon: Users,
+    href: "/portfolio",
+    label: "Portfolio",
+    icon: PieChart,
   },
   {
     href: "/settings",
