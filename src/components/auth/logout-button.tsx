@@ -13,7 +13,7 @@ export function LogoutButton() {
   async function handleLogout() {
     setIsLoading(true);
     await authClient.signOut();
-    router.push("/login");
+    router.push("/");
     router.refresh();
   }
 
