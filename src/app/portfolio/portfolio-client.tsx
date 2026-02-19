@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BottomNav } from "@/components/navigation/bottom-nav";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AssetChartModal } from "@/components/portfolio/asset-chart-modal";
 import {
   Eye,
   EyeOff,
@@ -83,6 +84,11 @@ const groupIcons: Record<string, React.ElementType> = {
 
 export function PortfolioClient({ user }: PortfolioClientProps) {
   const [showValues, setShowValues] = useState(true);
+  const [selectedPosition, setSelectedPosition] = useState<{
+    symbol: string;
+    name: string;
+    group: string;
+  } | null>(null);
   const userName = user.name || user.email?.split("@")[0] || "User";
   const currentHour = new Date().getHours();
   const greeting =
@@ -322,7 +328,7 @@ export function PortfolioClient({ user }: PortfolioClientProps) {
         </Card>
 
         {/* Positions Tabs */}
-        <Tabs defaultValue="all" className="w-full">
+        <Tabs defaultValue="all" className="w-full" suppressHydrationWarning>
           <TabsList className="grid w-full grid-cols-4 mb-4">
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="crypto">Crypto</TabsTrigger>
@@ -338,6 +344,11 @@ export function PortfolioClient({ user }: PortfolioClientProps) {
                 showValues={showValues}
                 formatCurrency={formatCurrency}
                 formatPercentage={formatPercentage}
+                onClick={() => setSelectedPosition({
+                  symbol: position.symbol,
+                  name: position.name,
+                  group: position.group,
+                })}
               />
             ))}
           </TabsContent>
@@ -353,12 +364,28 @@ export function PortfolioClient({ user }: PortfolioClientProps) {
                     showValues={showValues}
                     formatCurrency={formatCurrency}
                     formatPercentage={formatPercentage}
+                    onClick={() => setSelectedPosition({
+                      symbol: position.symbol,
+                      name: position.name,
+                      group: position.group,
+                    })}
                   />
                 ))}
             </TabsContent>
           ))}
         </Tabs>
       </div>
+
+      {/* Asset Chart Modal */}
+      {selectedPosition && (
+        <AssetChartModal
+          symbol={selectedPosition.symbol}
+          name={selectedPosition.name}
+          group={selectedPosition.group}
+          open={!!selectedPosition}
+          onOpenChange={(open) => !open && setSelectedPosition(null)}
+        />
+      )}
 
       <BottomNav />
     </div>
@@ -370,6 +397,7 @@ interface PositionCardProps {
   showValues: boolean;
   formatCurrency: (amount: number) => string;
   formatPercentage: (value: number) => string;
+  onClick: () => void;
 }
 
 function PositionCard({
@@ -377,12 +405,16 @@ function PositionCard({
   showValues,
   formatCurrency,
   formatPercentage,
+  onClick,
 }: PositionCardProps) {
   const isPositive = position.profit_loss_percentage >= 0;
   const Icon = groupIcons[position.group] || DollarSign;
 
   return (
-    <Card className="bg-card border-border/50 hover:bg-accent/50 transition-colors">
+    <Card 
+      className="bg-card border-border/50 hover:bg-accent/50 transition-colors cursor-pointer"
+      onClick={onClick}
+    >
       <CardContent className="p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
