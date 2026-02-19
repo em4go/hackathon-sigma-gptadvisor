@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { ChatClient } from "./chat-client";
+import { ChatClientWrapper } from "./chat-client-wrapper";
 import { BottomNav } from "@/components/navigation/bottom-nav";
 
 export default async function ChatPage() {
@@ -15,7 +15,7 @@ export default async function ChatPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background pb-20">
-      <ChatClient />
+      <ChatClientWrapper />
       <BottomNav />
     </div>
   );
