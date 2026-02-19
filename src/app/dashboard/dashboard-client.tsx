@@ -73,7 +73,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
 
   return (
     <div className="min-h-screen bg-[#09090b] pb-24">
-      <div className="container mx-auto px-4 py-6 max-w-md">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -140,7 +140,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
         </Card>
 
         {/* Grid Stats */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           {/* Today's Budget */}
           <Card className="bg-card border-border/50 row-span-2">
             <CardContent className="p-4 flex flex-col items-center justify-center h-full">

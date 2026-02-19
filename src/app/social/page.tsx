@@ -16,7 +16,7 @@ export default async function SocialPage() {
 
   return (
     <div className="min-h-screen bg-[#09090b] pb-24">
-      <div className="container mx-auto px-4 py-6 max-w-md">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         <Card className="bg-card border-border/50">
           <CardContent className="p-8 flex flex-col items-center justify-center text-center">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">

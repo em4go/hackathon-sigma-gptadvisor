@@ -36,7 +36,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-[#09090b] pb-24">
-      <div className="container mx-auto px-4 py-6 max-w-md">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         <Card className="bg-card border-border/50 mb-4">
           <CardContent className="p-6">
             <div className="flex items-center gap-3 mb-6">
