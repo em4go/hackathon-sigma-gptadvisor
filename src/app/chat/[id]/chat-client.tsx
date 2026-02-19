@@ -54,13 +54,18 @@ import { toast } from "sonner";
 import { availableModels, defaultModel, type ModelConfig } from "@/lib/models";
 
 const suggestions = [
-  "Explain React hooks with examples",
-  "How to optimize database queries?",
-  "Write a function to reverse a linked list",
-  "Best practices for TypeScript",
-  "Debug this code for me",
-  "Explain async/await in JavaScript",
+  "Where can I buy affordable streetwear?",
+  "What bars are open now near me?",
+  "How much did I spend on food this month?",
+  "Recommend a good Italian restaurant",
+  "Show me my recent expenses",
+  "Where can I find vintage clothing?",
 ];
+
+interface ChatClientProps {
+  chatId: string;
+  initialMessages?: UIMessage[];
+}
 
 const SuggestionItem = ({
   suggestion,
@@ -93,7 +98,6 @@ const convertBlobUrlToDataUrl = async (url: string): Promise<string | null> => {
 };
 
 // Component that handles the prompt input with attachments
-// Must be rendered inside PromptInput to access the attachments context
 const ChatPromptInput = ({
   input,
   setInput,
@@ -134,7 +138,7 @@ const ChatPromptInput = ({
         <PromptInputTextarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask anything about coding..."
+          placeholder="Ask about restaurants, shops, or your finances..."
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
@@ -155,7 +159,6 @@ const ChatPromptInput = ({
             </PromptInputActionMenuContent>
           </PromptInputActionMenu>
           
-          {/* Model Selector */}
           <ModelSelector open={modelSelectorOpen} onOpenChange={setModelSelectorOpen}>
             <ModelSelectorTrigger asChild>
               <PromptInputButton variant="ghost" className="gap-1.5">
@@ -211,14 +214,16 @@ const ChatPromptInput = ({
   );
 };
 
-export const ChatClient = () => {
+export const ChatClient = ({ chatId, initialMessages }: ChatClientProps) => {
   const [input, setInput] = useState("");
   const [selectedModel, setSelectedModel] = useState<ModelConfig>(defaultModel);
 
   const { messages, sendMessage, status } = useChat({
+    id: chatId,
+    messages: initialMessages,
     transport: new DefaultChatTransport({ 
       api: "/api/chat",
-      body: { model: selectedModel.id },
+      body: { chatId, model: selectedModel.id },
     }),
     onError: (error) => {
       toast.error("Error", {
@@ -242,7 +247,7 @@ export const ChatClient = () => {
           {messages.length === 0 ? (
             <ConversationEmptyState
               title="Start a conversation"
-              description="Ask me anything about coding, debugging, or software development."
+              description="Ask me about restaurants, clothing stores, bars, or your finances."
               icon={<MessageCircle className="size-8" />}
             />
           ) : (
@@ -296,11 +301,9 @@ export const ChatClient = () => {
             if (status === "streaming") return;
             if (!message.text.trim() && message.files.length === 0) return;
 
-            // Convert files to data URLs and create file parts
             const fileParts: FileUIPart[] = await Promise.all(
               message.files.map(async (file) => {
                 let url = file.url || "";
-                // Convert blob URL to data URL if needed
                 if (url.startsWith("blob:")) {
                   const dataUrl = await convertBlobUrlToDataUrl(url);
                   if (dataUrl) {
@@ -316,20 +319,17 @@ export const ChatClient = () => {
               })
             );
 
-            // Build message parts
             const parts: Array<{ type: "text"; text: string } | FileUIPart> = [];
             if (message.text.trim()) {
               parts.push({ type: "text", text: message.text });
             }
             parts.push(...fileParts);
 
-            // Send message with parts
             sendMessage({
               role: "user",
               parts,
             });
 
-            // Clear input
             setInput("");
           }}
         >

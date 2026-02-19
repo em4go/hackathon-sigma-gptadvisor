@@ -6,6 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BottomNav } from "@/components/navigation/bottom-nav";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Eye,
   EyeOff,
   TrendingUp,
@@ -31,6 +38,7 @@ import {
   Monitor,
   Utensils,
   ShoppingCart,
+  Filter,
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import transactionData from "@/../data/history.json";
@@ -76,6 +84,9 @@ const categoryIcons: Record<string, React.ElementType> = {
 
 export function DashboardClient({ user }: DashboardClientProps) {
   const [showBalance, setShowBalance] = useState(true);
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  
   const userName = user.name || user.email?.split("@")[0] || "User";
   const currentHour = new Date().getHours();
   const greeting =
@@ -92,6 +103,27 @@ export function DashboardClient({ user }: DashboardClientProps) {
     );
   }, []);
 
+  // Get unique categories from transactions
+  const categories = useMemo(() => {
+    const uniqueCategories = [...new Set(transactions.map((t) => t.category))];
+    return uniqueCategories.sort();
+  }, [transactions]);
+
+  // Filter transactions based on selected filters
+  const filteredTransactions = useMemo(() => {
+    let filtered = transactions;
+    
+    if (typeFilter !== "all") {
+      filtered = filtered.filter((t) => t.type === typeFilter);
+    }
+    
+    if (categoryFilter !== "all") {
+      filtered = filtered.filter((t) => t.category === categoryFilter);
+    }
+    
+    return filtered.slice(0, 10);
+  }, [transactions, typeFilter, categoryFilter]);
+
   const stats = useMemo(() => {
     const income = transactions
       .filter((t) => t.type === "Income")
@@ -107,9 +139,6 @@ export function DashboardClient({ user }: DashboardClientProps) {
       remainingBudget: income - expenses,
     };
   }, [transactions]);
-
-  // Get recent transactions (last 10)
-  const recentTransactions = transactions.slice(0, 10);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -291,17 +320,47 @@ export function DashboardClient({ user }: DashboardClientProps) {
 
         {/* Recent Transactions */}
         <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-foreground">
-              Recent Transactions
-            </h3>
-            <Button variant="link" size="sm" className="text-primary">
-              View All
-            </Button>
+          <div className="flex flex-col gap-3 mb-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-foreground">
+                Recent Transactions
+              </h3>
+              <Button variant="link" size="sm" className="text-primary">
+                View All
+              </Button>
+            </div>
+            
+            {/* Filters */}
+            <div className="flex gap-2">
+              <Select value={typeFilter} onValueChange={setTypeFilter}>
+                <SelectTrigger className="w-[120px] h-9">
+                  <SelectValue placeholder="Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="Income">Income</SelectItem>
+                  <SelectItem value="Expense">Expense</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger className="w-[160px] h-9">
+                  <SelectValue placeholder="Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="space-y-3">
-            {recentTransactions.map((transaction) => {
+            {filteredTransactions.map((transaction) => {
               const Icon =
                 categoryIcons[transaction.category] || categoryIcons.default;
               const isExpense = transaction.type === "Expense";
