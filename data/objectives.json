@@ -1,0 +1,72 @@
+{
+  "personal_goals": [
+    {
+      "category": "Travel",
+      "items": [
+        {
+          "name": "Trip to Thailand (15 days)",
+          "description": "Includes flights, accommodation, and daily budget",
+          "reference_price": 2500,
+          "currency": "EUR"
+        },
+        {
+          "name": "Weekend Getaway (Europe)",
+          "description": "Low-cost flights and city center hotel",
+          "reference_price": 450,
+          "currency": "EUR"
+        }
+      ]
+    },
+    {
+      "category": "Technology",
+      "items": [
+        {
+          "name": "High-end Smartphone",
+          "description": "Latest model (iPhone/Samsung)",
+          "reference_price": 1200,
+          "currency": "EUR"
+        },
+        {
+          "name": "Pro Laptop",
+          "description": "For creative work or gaming",
+          "reference_price": 1800,
+          "currency": "EUR"
+        }
+      ]
+    },
+    {
+      "category": "Home & Wellness",
+      "items": [
+        {
+          "name": "Sofa Renewal",
+          "description": "3-seater sofa with high-quality materials",
+          "reference_price": 900,
+          "currency": "EUR"
+        },
+        {
+          "name": "Annual Gym Membership",
+          "description": "Full access and group classes",
+          "reference_price": 500,
+          "currency": "EUR"
+        }
+      ]
+    },
+    {
+      "category": "Education & Development",
+      "items": [
+        {
+          "name": "Coding Bootcamp",
+          "description": "Intensive 3 to 6-month course",
+          "reference_price": 4000,
+          "currency": "EUR"
+        },
+        {
+          "name": "Language Course B2/C1",
+          "description": "Materials and certification exam",
+          "reference_price": 800,
+          "currency": "EUR"
+        }
+      ]
+    }
+  ]
+}
