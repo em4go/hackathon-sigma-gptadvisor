@@ -13,6 +13,16 @@ CoFinance reads financial data from local JSON files and provides:
 
 The AI uses the Vercel AI SDK's `ToolLoopAgent` with 8 specialized tools to analyze your data and give contextual responses.
 
+## Preview
+
+### Landing Page
+
+![Landing Page](preview/landing.png)
+
+### AI Chat Interface
+
+![Chat Example](preview/chat_example.png)
+
 ## Tech Stack
 
 | Category | Technology |
